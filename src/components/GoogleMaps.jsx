@@ -3,6 +3,7 @@ import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import SearchBox from "./SearchBox";
 import PathRowFinder from "./PathRowFinder";
 
+
 const containerStyle = {
   width: "100%",
   height: "800px",
@@ -14,12 +15,15 @@ const defaultCenter = {
   lng: 73.5674,
 };
 
-function GoogleMaps() {
+const libraries = ["places"]
+
+
+export default function GoogleMaps() {
   //prerequisite for loading google maps
   const { isLoaded, loadError } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
-    libraries: ["places"],
+    libraries,
   });
 
   //setting the map and the marker
@@ -97,5 +101,3 @@ function GoogleMaps() {
     <div>Loading map...</div>
   );
 }
-
-export default GoogleMaps;
