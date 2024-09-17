@@ -17,7 +17,6 @@ export default function PathRowFinder ({ lat, lng }) {
   useEffect(() => {
     if (lat && lng && wrsData) {
       const res = getPathRow(lat, lng);
-      console.log(res);
       setPathRow(res);
     }
   }, [lat, lng, wrsData]);
@@ -37,16 +36,18 @@ export default function PathRowFinder ({ lat, lng }) {
     return null;
   };
 
-  const content = pathRow ? (
+
+  console.log(pathRow);
+  const content = pathRow ? <>
     <div>
       <h2>Path: {pathRow.path}</h2>
       <h2>Row: {pathRow.row}</h2>
     </div>
-  ) : <>
-    <p>failed to find path</p>
-    { console.log("kir") }
+  </> : <>
+    <p>mammad to find path</p>
   </>
   
+  pathRow ? console.log("fall") : console.log("meow")
 
   return (
     <div>

@@ -86,8 +86,10 @@ export default function GoogleMaps() {
         onLoad={onLoadMap}
       >
         {marker && <Marker position={{ lat: marker.lat, lng: marker.lng }} />}
-        <PathRowFinder lat={marker?.lat} lng={marker?.lng} />
       </GoogleMap>
+
+      <PathRowFinder lat={marker?.lat} lng={marker?.lng} />
+
 
       {marker && (
         <div style={{ marginTop: "10px" }}>
