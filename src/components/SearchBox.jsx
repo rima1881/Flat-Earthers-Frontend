@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 
-const SearchBox = ({ onSearch }) => {
+const SearchBox = ({ onSearch , inputClass }) => {
   const inputref = useRef(null);
 
   //the useeffect hook is used to load the google maps places library and set up the autocomplete functionality
@@ -27,7 +27,7 @@ const SearchBox = ({ onSearch }) => {
       ref={inputref}
       type="text"
       placeholder="Search for a place"
-      style={{ width: "100%", padding: "10px" }}
+      className={inputClass}
     />
   );
 };

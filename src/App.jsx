@@ -1,24 +1,23 @@
 import React, { useState } from "react";
-//import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
-import GoogleMaps from "./components/GoogleMaps";
-import PathRowFinder from "./components/PathRowFinder";
-import Login from "./pages/Login/Login";
+import { Routes , Route} from "react-router-dom"
+import Layout from "./pages/Layout/Layout";
+import Home from "./pages/Home/Home";
+import Setting from "./pages/setting/Setting";
+import Targets from "./pages/Targets/Targets";
 
-function App() {
+export default function App() {
   const [userEmail, setUserEmail] = useState("");
 
-  const pageContent =
-    userEmail == "" ? (
-      <Login setUserEmail={( user ) => {
-          setUserEmail(user);
-      }} />
-    ) : (
-      <div>
-        <GoogleMaps />
-      </div>
-    );
+  return ( 
+  <Routes>
+    <Route path="/" element={<Layout />}>
+      
+      {/* general Paths */}
+      <Route path="/" element={<Home />} />
+      <Route path="/setting" element={<Setting />}/>
+      <Route path="/targets" element={<Targets />} />
 
-  return <>{pageContent}</>;
+    </Route>
+  </Routes>
+  )
 }
-
-export default App;

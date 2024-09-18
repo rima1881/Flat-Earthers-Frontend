@@ -1,12 +1,13 @@
 import React, { useState, useCallback, useMemo } from "react";
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
-import SearchBox from "./SearchBox";
-import PathRowFinder from "./PathRowFinder";
+import SearchBox from "../SearchBox";
+import PathRowFinder from "../PathRowFinder";
+import style from "./GoogleMaps.module.css";
 
 
 const containerStyle = {
   width: "100%",
-  height: "800px",
+  height: "100vh",
 };
 
 //initial center
@@ -75,8 +76,8 @@ export default function GoogleMaps() {
   );
 
   return isLoaded ? (
-    <div>
-      <SearchBox onSearch={onSearch} />
+    <div className={style.page}>
+      <SearchBox onSearch={onSearch} inputClass={style.search} />
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={defaultCenter}
@@ -88,6 +89,8 @@ export default function GoogleMaps() {
         {marker && <Marker position={{ lat: marker.lat, lng: marker.lng }} />}
       </GoogleMap>
 
+
+      {/*
       <PathRowFinder lat={marker?.lat} lng={marker?.lng} />
 
 
@@ -97,8 +100,9 @@ export default function GoogleMaps() {
           <p>Latitude: {marker.lat}</p>
           <p>Longitude: {marker.lng}</p>
         </div>
-      )}
+      )}*/}
     </div>
+      
   ) : (
     <div>Loading map...</div>
   );
