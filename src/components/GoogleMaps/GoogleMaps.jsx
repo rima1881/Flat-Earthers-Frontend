@@ -1,9 +1,9 @@
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback, useMemo, useEffect } from "react";
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import SearchBox from "../SearchBox";
-import PathRowFinder from "../PathRowFinder";
 import style from "./GoogleMaps.module.css";
-
+import  {extractPathRows , initData} from "../../utils/PathRowFinder"
+import { square } from "@turf/turf";
 
 const containerStyle = {
   width: "100%",
@@ -20,52 +20,70 @@ const libraries = ["places"]
 
 
 export default function GoogleMaps() {
+
+
   //prerequisite for loading google maps
   const { isLoaded, loadError } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
     libraries,
-  });
+  })
 
   //setting the map and the marker
-  const [marker, setMarker] = useState(null);
-  const [map, setMap] = useState(null);
+  const [marker, setMarker] = useState();
+  const [map, setMap] = useState();
+
+  useEffect(() => { initData() } , [] )
 
   //callback function for when the map is clicked
   const onMapClick = useCallback((e) => {
+
     const newMarker = {
       lat: e.latLng.lat(),
       lng: e.latLng.lng(),
     };
-    var latlng = new google.maps.LatLng(e.latLng.lat(), e.latLng.lng());
-    if (map) {
-      map.panTo(latlng);
-    }
-    setMarker(newMarker);
-  }, []);
+
+    const squares = extractPathRows(newMarker.lat , newMarker.lng)
+
+    squares.forEach( square => {
+      new google.maps.Polygon({
+        paths: square.coordinates,
+        strokeColor: "#FF0000",
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: "#FF0000",
+        fillOpacity: 0.35,
+      }).setMap(map)
+    })
+
+
+    var latlng = new google.maps.LatLng(newMarker.lat , newMarker.lng)
+
+    map && map.panTo(latlng)
+    setMarker(newMarker)
+  }, [])
 
   //Function for when a place is searched
   const onSearch = (location) => {
-    const newMarker = {
+
+    // TODO ---------------------------------------------
+    setMarker({
       lat: location.lat(),
       lng: location.lng(),
-    };
+    })
 
-    setMarker(newMarker);
-    if (map) {
-      map.panTo(location);
-      //map.zoom = 15;
-    }
-  };
+    map && map.panTo(location);
+  }
 
   //Function for when the map is loaded
   const onLoadMap = (mapInstance) => {
     setMap(mapInstance);
-  };
-
-  if (loadError) {
-    return <div>Error loading map. Please try again later.</div>;
   }
+
+  if (loadError)
+    return <div>Error loading map. Please try again later.</div>
+  
+
   //optimization for map options
   const mapOptions = useMemo(
     () => ({
@@ -73,7 +91,7 @@ export default function GoogleMaps() {
       zoomControl: true,
     }),
     []
-  );
+  )
 
   return isLoaded ? (
     <div className={style.page}>
@@ -90,17 +108,6 @@ export default function GoogleMaps() {
       </GoogleMap>
 
 
-      {/*
-      <PathRowFinder lat={marker?.lat} lng={marker?.lng} />
-
-
-      {marker && (
-        <div style={{ marginTop: "10px" }}>
-          <h3>Marker Position</h3>
-          <p>Latitude: {marker.lat}</p>
-          <p>Longitude: {marker.lng}</p>
-        </div>
-      )}*/}
     </div>
       
   ) : (
