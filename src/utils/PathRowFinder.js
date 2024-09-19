@@ -1,34 +1,49 @@
 import * as turf from "@turf/turf";
+import { useState , useEffect } from "react";
 
-let data;
 
-const extractPathRows = (lat , lng) => {
+const useWRS2 = () => {
 
-    const point = turf.point([lng, lat]);
-    
-    console.log(data)
+    const [ data , setData ] = useState([]);
 
-    const result = data.filter( feature => turf.booleanPointInPolygon(point,feature) )
-        .map( feature => { 
-            return {
-                path : feature.properties.PATH ,
-                row : feature.properties.ROW , 
-                coordinates : feature.geometry.coordinates[0].map(e => { 
-                    return { lat : e[1] , lng : e[0] }
-                })
-            }
-        })
+    useEffect( () => {
 
-    return result
+        fetch("/WRS2.json")
+            .then( response => response.json() )
+            .then( db => setData(db) )
+            .catch( err => console.log(err) )
+
+    }, [])
+
+    return data
 
 }
 
-const  initData = () => (
-    fetch("/WRS2.json")
-      .then( response => response.json() )
-      .then( db => data = db.features )
-      .catch( err => console.log(err) )
-)
+
+const extractSquares = (data , lat , lng) => {
+
+    const point = turf.point([lng, lat]);
+    
+    return data.filter( feature => turf.booleanPointInPolygon(point,feature) )
+        .map( feature => (
+            {
+                path : feature.properties.PATH ,
+                row : feature.properties.ROW , 
+                coordinates : feature.geometry.coordinates[0].map(e => (
+                    { lat : e[1] , lng : e[0] }
+                ))
+            }
+        ))
+
+}
+
+const useSquare = (lat , lng) => {
+
+    const data = useWRS2()
+
+    return extractSquares( data , lat , lng )
+
+}
 
 
-export {extractPathRows , initData};
+export {useSquare};

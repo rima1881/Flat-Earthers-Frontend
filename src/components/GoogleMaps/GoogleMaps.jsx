@@ -1,8 +1,8 @@
-import React, { useState, useCallback, useMemo, useEffect } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import SearchBox from "../SearchBox";
 import style from "./GoogleMaps.module.css";
-import  {extractPathRows , initData} from "../../utils/PathRowFinder"
+import { useSquare } from "../../utils/PathRowFinder"
 import { square } from "@turf/turf";
 
 const containerStyle = {
@@ -33,8 +33,6 @@ export default function GoogleMaps() {
   const [marker, setMarker] = useState();
   const [map, setMap] = useState();
 
-  useEffect(() => { initData() } , [] )
-
   //callback function for when the map is clicked
   const onMapClick = useCallback((e) => {
 
@@ -43,7 +41,7 @@ export default function GoogleMaps() {
       lng: e.latLng.lng(),
     };
 
-    const squares = extractPathRows(newMarker.lat , newMarker.lng)
+    const squares = useSquare(newMarker.lat , newMarker.lng)
 
     squares.forEach( square => {
       new google.maps.Polygon({
