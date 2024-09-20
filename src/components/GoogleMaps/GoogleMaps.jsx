@@ -30,8 +30,11 @@ export default function GoogleMaps() {
   })
 
   //setting the map and the marker
-  const [marker, setMarker] = useState();
-  const [map, setMap] = useState();
+  const [marker, setMarker] = useState()
+  const [map, setMap] = useState()
+
+  //Implement our custom hook
+  const [ squares , addSquare ] = useSquare()
 
   //callback function for when the map is clicked
   const onMapClick = useCallback((e) => {
@@ -41,7 +44,7 @@ export default function GoogleMaps() {
       lng: e.latLng.lng(),
     };
 
-    const squares = useSquare(newMarker.lat , newMarker.lng)
+    addSquare(newMarker.lat , newMarker.lng)
 
     squares.forEach( square => {
       new google.maps.Polygon({

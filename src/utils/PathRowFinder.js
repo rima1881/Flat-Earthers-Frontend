@@ -4,16 +4,8 @@ import { useState , useEffect } from "react";
 
 const useWRS2 = () => {
 
-    const [ data , setData ] = useState([]);
 
-    useEffect( () => {
-
-        fetch("/WRS2.json")
-            .then( response => response.json() )
-            .then( db => setData(db) )
-            .catch( err => console.log(err) )
-
-    }, [])
+    
 
     return data
 
@@ -37,11 +29,38 @@ const extractSquares = (data , lat , lng) => {
 
 }
 
-const useSquare = (lat , lng) => {
+const useSquare = () => {
 
-    const data = useWRS2()
+    const [ wrs2 , setWRS2 ] = useState([]);
 
-    return extractSquares( data , lat , lng )
+
+    useEffect( () => {
+
+        fetch("/WRS2.json")
+            .then( response => response.json() )
+            .then( db => setWRS2(db.features) )
+            .catch( err => console.log(err) )
+
+    }, [])
+
+
+    const [ coordinates , setCoordinates ] = useState( { lat : 0 , lng : 0} )
+    const [ squares , setSquares ] = useState([])
+
+    const addSquare = (lat , lng) => {
+        setCoordinates( { lat : lat , lng : lng } )
+    }
+
+    useEffect( () => {
+
+        console.log(wrs2)
+
+        const newSquares = extractSquares( wrs2 , coordinates.lat , coordinates.lng )
+        setSquares( prev => [...prev , newSquares] )
+
+    } , [coordinates ,wrs2 ] )
+
+    return [ squares , addSquare ]
 
 }
 
