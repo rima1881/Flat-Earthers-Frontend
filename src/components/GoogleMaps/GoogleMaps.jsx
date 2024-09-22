@@ -25,7 +25,7 @@ export default function GoogleMaps() {
   //prerequisite for loading google maps
   const { isLoaded, loadError } = useJsApiLoader({
     id: "google-map-script",
-    googleMapsApiKey: "AIzaSyCIjd4JBoriF2HwdtiM1VohwQQ4Kdwc_No",
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
     libraries,
   })
 
