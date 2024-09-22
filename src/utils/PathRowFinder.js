@@ -2,16 +2,6 @@ import * as turf from "@turf/turf";
 import { useState , useEffect } from "react";
 
 
-const useWRS2 = () => {
-
-
-    
-
-    return data
-
-}
-
-
 const extractSquares = (data , lat , lng) => {
 
     const point = turf.point([lng, lat]);
@@ -45,22 +35,21 @@ const useSquare = () => {
 
 
     const [ coordinates , setCoordinates ] = useState( { lat : 0 , lng : 0} )
-    const [ squares , setSquares ] = useState([])
+    const [ target , setTargets ] = useState([])
 
-    const addSquare = (lat , lng) => {
+    const addTarget = (lat , lng) => {
         setCoordinates( { lat : lat , lng : lng } )
+
+        // Immediately calculate and set the new targets based on the current coordinates
+        const newSquares = extractSquares(wrs2, lat, lng);
+  
+        // Update the targets immediately
+        setTargets(newSquares);
+
+        return newSquares
     }
 
-    useEffect( () => {
-
-        console.log(wrs2)
-
-        const newSquares = extractSquares( wrs2 , coordinates.lat , coordinates.lng )
-        setSquares( prev => [...prev , newSquares] )
-
-    } , [coordinates ,wrs2 ] )
-
-    return [ squares , addSquare ]
+    return [ target , addTarget ]
 
 }
 

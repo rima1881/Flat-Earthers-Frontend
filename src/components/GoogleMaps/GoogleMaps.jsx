@@ -25,7 +25,7 @@ export default function GoogleMaps() {
   //prerequisite for loading google maps
   const { isLoaded, loadError } = useJsApiLoader({
     id: "google-map-script",
-    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
+    googleMapsApiKey: "AIzaSyCIjd4JBoriF2HwdtiM1VohwQQ4Kdwc_No",
     libraries,
   })
 
@@ -34,35 +34,45 @@ export default function GoogleMaps() {
   const [map, setMap] = useState()
 
   //Implement our custom hook
-  const [ squares , addSquare ] = useSquare()
+  const [ targets , addTarget ] = useSquare()
 
   //callback function for when the map is clicked
   const onMapClick = useCallback((e) => {
-
     const newMarker = {
       lat: e.latLng.lat(),
       lng: e.latLng.lng(),
     };
+  
+    // Add the new marker to targets
+    const updatedTargets = addTarget(newMarker.lat, newMarker.lng);
+  
+    // Calculate the new coordinates including the new marker
+    const coords = updatedTargets.map((target) => target.coordinates);
+  
+    console.log(coords)
 
-    addSquare(newMarker.lat , newMarker.lng)
+    // Create the polygon before setting state
+    const targets = new google.maps.Polygon({
+      paths: coords,
+      strokeColor: "#FF0000",
+      strokeOpacity: 0.8,
+      strokeWeight: 2,
+      fillColor: "#FF0000",
+      fillOpacity: 0.35,
+    });
+  
+    // Render the polygon on the map
+    targets.setMap(map);
+  
+    // Pan to the new marker
+    var latlng = new google.maps.LatLng(newMarker.lat, newMarker.lng);
+    map && map.panTo(latlng);
+  
+    // Now update the state, so the UI can update
+    setMarker(newMarker);
+  
+  }, [addTarget, map]);
 
-    squares.forEach( square => {
-      new google.maps.Polygon({
-        paths: square.coordinates,
-        strokeColor: "#FF0000",
-        strokeOpacity: 0.8,
-        strokeWeight: 2,
-        fillColor: "#FF0000",
-        fillOpacity: 0.35,
-      }).setMap(map)
-    })
-
-
-    var latlng = new google.maps.LatLng(newMarker.lat , newMarker.lng)
-
-    map && map.panTo(latlng)
-    setMarker(newMarker)
-  }, [])
 
   //Function for when a place is searched
   const onSearch = (location) => {
