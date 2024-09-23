@@ -1,9 +1,11 @@
 import React, { useState, useCallback, useMemo } from "react";
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
-import SearchBox from "../SearchBox";
 import style from "./GoogleMaps.module.css";
 import { useSquare } from "../../utils/PathRowFinder"
 import { square } from "@turf/turf";
+import SearchBox from "../SearchBox";
+import TargetSelect from "../TargetSelect/TargetSelect";
+
 
 const containerStyle = {
   width: "100%",
@@ -118,6 +120,8 @@ export default function GoogleMaps() {
         {marker && <Marker position={{ lat: marker.lat, lng: marker.lng }} />}
       </GoogleMap>
 
+
+      <TargetSelect num={2} />
 
     </div>
       
