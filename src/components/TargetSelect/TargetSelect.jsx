@@ -6,16 +6,19 @@ import { faClose } from "@fortawesome/free-solid-svg-icons";
 export default function TargetSelect(props){
 
     const [ selectedOption , setSelectedOption ] = useState()
+    const [ isOn , setIsOn ] = props.isOn
+
+    const closeHandle = () => setIsOn(false)
 
     for(let i=0; i < props.num;i++)
 
     
 
     return (
-    <div className={style.container}>
+    <div className={isOn ? style.containerOn : style.containeroff}>
         <div className={style.header}>
             <span>Select one of the targets</span>
-            <button><FontAwesomeIcon icon={faClose} /></button>
+            <button><FontAwesomeIcon icon={faClose} onClick={closeHandle} /></button>
         </div>
         <div className={style.body}>
             <ul className={style.list}>
@@ -29,6 +32,7 @@ export default function TargetSelect(props){
                     <span>Option 3</span>
                 </li>
             </ul>
+            <button className={style.submit}>Submit</button>
         </div>
     </div>
     )

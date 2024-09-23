@@ -33,23 +33,15 @@ const useSquare = () => {
 
     }, [])
 
-
-    const [ coordinates , setCoordinates ] = useState( { lat : 0 , lng : 0} )
-    const [ target , setTargets ] = useState([])
-
     const addTarget = (lat , lng) => {
-        setCoordinates( { lat : lat , lng : lng } )
 
         // Immediately calculate and set the new targets based on the current coordinates
-        const newSquares = extractSquares(wrs2, lat, lng);
-  
-        // Update the targets immediately
-        setTargets(newSquares);
+        const newTargets = extractSquares(wrs2, lat, lng);
 
-        return newSquares
+        return newTargets
     }
 
-    return [ target , addTarget ]
+    return addTarget
 
 }
 

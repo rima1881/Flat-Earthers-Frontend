@@ -5,6 +5,7 @@ import { useSquare } from "../../utils/PathRowFinder"
 import { square } from "@turf/turf";
 import SearchBox from "../SearchBox";
 import TargetSelect from "../TargetSelect/TargetSelect";
+import { faL } from "@fortawesome/free-solid-svg-icons";
 
 
 const containerStyle = {
@@ -34,9 +35,11 @@ export default function GoogleMaps() {
   //setting the map and the marker
   const [marker, setMarker] = useState()
   const [map, setMap] = useState()
+  const [selectingTarget , setSelectingTarget] = useState(false)
+  const [target , setTarget] = useState()
 
   //Implement our custom hook
-  const [ targets , addTarget ] = useSquare()
+  const addTarget = useSquare()
 
   //callback function for when the map is clicked
   const onMapClick = useCallback((e) => {
@@ -46,13 +49,14 @@ export default function GoogleMaps() {
     };
   
     // Add the new marker to targets
-    const updatedTargets = addTarget(newMarker.lat, newMarker.lng);
-  
-    // Calculate the new coordinates including the new marker
-    const coords = updatedTargets.map((target) => target.coordinates);
-  
-    console.log(coords)
+    const avaibleTargets = addTarget(newMarker.lat, newMarker.lng)
+    
+    if(avaibleTargets.length > 1)
+      setSelectingTarget(true)
 
+    // Calculate the new coordinates including the new marker
+    const coords = avaibleTargets.map( t => t.coordinates)
+  
     // Create the polygon before setting state
     const targets = new google.maps.Polygon({
       paths: coords,
@@ -121,7 +125,7 @@ export default function GoogleMaps() {
       </GoogleMap>
 
 
-      <TargetSelect num={2} />
+      <TargetSelect num={2} isOn={[selectingTarget , setSelectingTarget]} target={[target , setTarget]} />
 
     </div>
       

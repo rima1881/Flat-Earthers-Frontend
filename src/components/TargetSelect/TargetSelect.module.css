@@ -1,15 +1,32 @@
 
-.container{
+.containerOn{
     width: 300px;
     z-index: 2;
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 120px;
+    left: 70px;
+    display: flex;
+    transition: 0.5s;
+    flex-direction: column;
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    box-shadow: 5px 5px 10px #24292e;
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+.containeroff{
+    width: 300px;
+    z-index: 2;
+    position: absolute;
+    transition: 0.5s;
+    top: 120px;
+    left: -400px;
     display: flex;
     flex-direction: column;
     background-color: #f5f5f5;
     border-radius: 10px;
-
+    box-shadow: 5px 5px 10px #24292e;
     font-family: "Roboto", sans-serif;
     font-weight: 400;
     font-style: normal;
@@ -34,9 +51,18 @@
     width: 25px;
     height: 25px;
     border-radius: 5px;
+    transition: 0.5s;
+}
+.header button:hover{
+    background-color: #24292e;
+    color: #ff0000;
+    border-style: solid;
+    border-color: #ff0000;
+    border-width: 1px;
 }
 .list{
     list-style: none;
+    width: 100%;
     padding: 0;
 }
 .list li{
@@ -55,4 +81,22 @@
 }
 .list li:hover{
     background-color: rgba(0, 0, 255, 0.3);
+}
+.submit{
+    width: 80%;
+    padding: 5px;
+    background-color: rgba(0, 255, 0, 0.1);
+    border-style: solid;
+    border-color: #00ff00;
+    border-width: 1px;
+    height: 30px;
+    margin: auto;
+    margin-bottom: 10px;
+    transition: 0.5s;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.body{
+    display: flex;
+    flex-direction: column;
 }
