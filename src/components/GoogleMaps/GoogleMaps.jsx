@@ -38,8 +38,8 @@ export default function GoogleMaps() {
   const [availableTargets , setAvailbleTargets] = useState()
 
   //Implement our custom hooks
-  //const { targetsContext } = useTarget()
-  //console.log(useContext(targetsContext))
+  const { targets } = useTarget()
+  console.log(targets())
 
   const getAvailableTargets = useAvailableTargets()
 

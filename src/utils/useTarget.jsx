@@ -1,5 +1,5 @@
 import * as turf from "@turf/turf";
-import { useState , useEffect , createContext, useContext , useCallback } from "react";
+import { useState , useEffect , createContext, useContext } from "react";
 
 //  I divided the functionalities into three hooks
 //  Because I was noticing unwanted reloads which 
@@ -51,18 +51,17 @@ const useAvailableTargets = () => {
 //  Between To Components useContext was used. IDK easier
 //  way in react :(
 
+const targetsContext = createContext()
+
+
 const useTarget = () => {
 
-    
-
-    const targetsContext = createContext()
     const TargetsProvider = ({ children }) => {
 
         const [ targets , setTargets ] = useState("mammad")
         const addTarget = ( target ) => {
             setTargets ( prev => [...prev , target])
         }
-
 
         return (
             <targetsContext.Provider value={[ targets , addTarget ]}>
@@ -72,8 +71,10 @@ const useTarget = () => {
 
     }
 
+    const targets = () => useContext(targetsContext)
 
-    return { TargetsProvider , targetsContext }
+
+    return { TargetsProvider , targets }
 
 }
 
