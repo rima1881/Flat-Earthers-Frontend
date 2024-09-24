@@ -1,7 +1,7 @@
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback, useMemo , useContext } from "react";
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import style from "./GoogleMaps.module.css";
-import { useSquare } from "../../utils/PathRowFinder"
+import  { useTarget , useAvailableTargets } from "../../utils/useTarget"
 import { square } from "@turf/turf";
 import SearchBox from "../SearchBox";
 import TargetSelect from "../TargetSelect/TargetSelect";
@@ -35,49 +35,50 @@ export default function GoogleMaps() {
   //setting the map and the marker
   const [marker, setMarker] = useState()
   const [map, setMap] = useState()
-  const [selectingTarget , setSelectingTarget] = useState(false)
-  const [target , setTarget] = useState()
+  const [availableTargets , setAvailbleTargets] = useState()
 
-  //Implement our custom hook
-  const addTarget = useSquare()
+  //Implement our custom hooks
+  //const { targetsContext } = useTarget()
+  //console.log(useContext(targetsContext))
+
+  const getAvailableTargets = useAvailableTargets()
 
   //callback function for when the map is clicked
   const onMapClick = useCallback((e) => {
+
     const newMarker = {
       lat: e.latLng.lat(),
       lng: e.latLng.lng(),
     };
-  
+
     // Add the new marker to targets
-    const avaibleTargets = addTarget(newMarker.lat, newMarker.lng)
-    
-    if(avaibleTargets.length > 1)
-      setSelectingTarget(true)
+    const data = getAvailableTargets(newMarker.lat, newMarker.lng)
 
     // Calculate the new coordinates including the new marker
-    const coords = avaibleTargets.map( t => t.coordinates)
+    const coords = data.map( t => t.coordinates)
   
     // Create the polygon before setting state
-    const targets = new google.maps.Polygon({
+    const t = new google.maps.Polygon({
       paths: coords,
       strokeColor: "#FF0000",
       strokeOpacity: 0.8,
       strokeWeight: 2,
       fillColor: "#FF0000",
       fillOpacity: 0.35,
-    });
+    })
   
     // Render the polygon on the map
-    targets.setMap(map);
+    t.setMap(map)
   
     // Pan to the new marker
-    var latlng = new google.maps.LatLng(newMarker.lat, newMarker.lng);
-    map && map.panTo(latlng);
+    var latlng = new google.maps.LatLng(newMarker.lat, newMarker.lng)
+    map && map.panTo(latlng)
   
     // Now update the state, so the UI can update
-    setMarker(newMarker);
+    setMarker(newMarker)
+    setAvailbleTargets(data)
   
-  }, [addTarget, map]);
+  }, [ getAvailableTargets , map])
 
 
   //Function for when a place is searched
@@ -124,8 +125,6 @@ export default function GoogleMaps() {
         {marker && <Marker position={{ lat: marker.lat, lng: marker.lng }} />}
       </GoogleMap>
 
-
-      <TargetSelect num={2} isOn={[selectingTarget , setSelectingTarget]} target={[target , setTarget]} />
 
     </div>
       
