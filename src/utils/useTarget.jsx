@@ -1,5 +1,5 @@
 import * as turf from "@turf/turf";
-import { useState , useEffect , createContext, useContext } from "react";
+import { useState , useEffect , createContext, useContext, useCallback } from "react";
 
 //  I divided the functionalities into three hooks
 //  Because I was noticing unwanted reloads which 
@@ -24,10 +24,10 @@ const useAvailableTargets = () => {
 
     }, [])
 
-    const extractSquares = (data , lat , lng) => {
+    const extractSquares = useCallback(( lat , lng) => {
         const point = turf.point([lng, lat]);
     
-        return data.filter( feature => turf.booleanPointInPolygon(point,feature) )
+        return wrs2.filter( feature => turf.booleanPointInPolygon(point,feature) )
             .map( feature => (
                 {
                     path : feature.properties.PATH ,
@@ -37,12 +37,12 @@ const useAvailableTargets = () => {
                     ))
                 }
             ))
-        }
+        }, [wrs2])
     
     //  Data is not loaded syncronessly so extract squares
     //  needed an extra function. Might be able to be fixed
     //  with useCallback
-    return (lat , lng) => extractSquares(wrs2 , lat , lng)
+    return extractSquares
 
 }
 
@@ -52,7 +52,6 @@ const useAvailableTargets = () => {
 //  way in react :(
 
 const targetsContext = createContext()
-
 
 const useTarget = () => {
 

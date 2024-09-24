@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo , useContext } from "react";
+import React, { useState, useCallback, useMemo , useContext, useEffect } from "react";
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import style from "./GoogleMaps.module.css";
 import  { useTarget , useAvailableTargets } from "../../utils/useTarget"
@@ -24,6 +24,22 @@ const libraries = ["places"]
 
 export default function GoogleMaps() {
 
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      console.log("Page is about to refresh or be closed.");
+      // You can customize the message shown to the user (modern browsers may ignore this)
+      const message = "Are you sure you want to leave?";
+      event.returnValue = message; // This is for older browsers
+      return message; // This is for modern browsers
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
 
   //prerequisite for loading google maps
   const { isLoaded, loadError } = useJsApiLoader({
@@ -39,9 +55,11 @@ export default function GoogleMaps() {
 
   //Implement our custom hooks
   const { targets } = useTarget()
-  console.log(targets())
+  targets()
+  //console.log(targets())
 
-  const getAvailableTargets = useAvailableTargets()
+  console.log("kir")
+  const getAvailableTargets =  useAvailableTargets()
 
   //callback function for when the map is clicked
   const onMapClick = useCallback((e) => {
