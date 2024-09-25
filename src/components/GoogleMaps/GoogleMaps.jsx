@@ -42,7 +42,7 @@ export default function GoogleMaps() {
     availableTargets.forEach( availableTarget => availableTarget.shape.setMap() )
     
     setAvailbleTargets([])
-  } , [ availableTargets , map] )
+  } , [ availableTargets ] )
 
   //  Custom Hooks
   const getAvailableTargets = useWRS2()
@@ -50,14 +50,11 @@ export default function GoogleMaps() {
   //  Implement A load function on saved Targets
   const { targets } = useTarget()
 
-
-  const setActiveHandle = useCallback( (i) => {
-
-  },[map , availableTargets])
-
   //callback function for when the map is clicked
   const onMapClick = useCallback((e) => {
 
+    clearAvailableTargets()
+    
     const newMarker = {
       lat: e.latLng.lat(),
       lng: e.latLng.lng(),
@@ -81,7 +78,9 @@ export default function GoogleMaps() {
       sq.shape.setMap(map)
 
     })
-  
+
+    squares.activeIndex = 0
+
     // Pan to the new marker
     var latlng = new google.maps.LatLng(newMarker.lat, newMarker.lng)
     map && map.panTo(latlng)
@@ -90,7 +89,7 @@ export default function GoogleMaps() {
     setMarker(newMarker)
     setAvailbleTargets(squares)
   
-  }, [map])
+  }, [ availableTargets , map])
 
 
   //  Function for when a place is searched
@@ -118,6 +117,19 @@ export default function GoogleMaps() {
     return <div>Error loading map. Please try again later.</div>
   
 
+  const activeHandle = (index) => {
+
+    setAvailbleTargets(prev => {
+      const newState = [...prev];  // Create a new copy of the array
+    newState.activeIndex = index;  // Modify the copy
+    return newState;
+    })
+    console.log(availableTargets)
+    console.log("hello ggoog")
+  }
+
+  console.log("google map was rereneder")
+
   //optimization for map options
   const mapOptions = useMemo(
     () => ({
@@ -133,7 +145,7 @@ export default function GoogleMaps() {
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={defaultCenter}
-        zoom={10}
+        zoom={5}
         onClick={onMapClick}
         options={mapOptions}
         onLoad={onLoadMap}
@@ -141,7 +153,7 @@ export default function GoogleMaps() {
         {marker && <Marker position={{ lat: marker.lat, lng: marker.lng }} />}
       </GoogleMap>
 
-      <TargetSelect options={availableTargets} clearOptions={clearAvailableTargets} />
+      <TargetSelect options={availableTargets} setActive={activeHandle} clearOptions={clearAvailableTargets} />
     </div>
       
   ) : (

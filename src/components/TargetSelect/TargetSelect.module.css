@@ -83,7 +83,7 @@
     background-color: rgba(0, 0, 255, 0.3);
 }
 .active{
-    background-color: #0000ff;
+    background-color: #000;
 }
 .submit{
     width: 80%;
@@ -102,24 +102,4 @@
 .body{
     display: flex;
     flex-direction: column;
-}
-.blockMap{
-    background-color: rgba(0,0,0, 0.3);
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 2;
-    transition: 1s;
-}
-.unBlockMap{
-    background-color: rgba(0,0,0 , 0);
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    transition: 1s;
-    z-index: -1;
 }
