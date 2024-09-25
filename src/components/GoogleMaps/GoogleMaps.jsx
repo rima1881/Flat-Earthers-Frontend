@@ -5,7 +5,6 @@ import  { useTarget , useWRS2 } from "../../utils/useTarget"
 import { square } from "@turf/turf";
 import SearchBox from "../SearchBox";
 import TargetSelect from "../TargetSelect/TargetSelect";
-import { faL } from "@fortawesome/free-solid-svg-icons";
 
 
 const containerStyle = {
@@ -37,7 +36,13 @@ export default function GoogleMaps() {
 
   //  It is passed to select Options and cleared there
   const [availableTargets , setAvailbleTargets] = useState([])
-  const clearAvailableTargets = useCallback( () => setAvailbleTargets([]) , [] )
+
+  const clearAvailableTargets = useCallback( () => {
+
+    availableTargets.forEach( availableTarget => availableTarget.shape.setMap() )
+    
+    setAvailbleTargets([])
+  } , [ availableTargets , map] )
 
   //  Custom Hooks
   const getAvailableTargets = useWRS2()
@@ -46,33 +51,36 @@ export default function GoogleMaps() {
   const { targets } = useTarget()
 
 
+  const setActiveHandle = useCallback( (i) => {
+
+  },[map , availableTargets])
+
   //callback function for when the map is clicked
   const onMapClick = useCallback((e) => {
 
     const newMarker = {
       lat: e.latLng.lat(),
       lng: e.latLng.lng(),
-    };
+    }
 
     // Add the new marker to targets
-    const data = getAvailableTargets(newMarker.lat, newMarker.lng)
+    const squares = getAvailableTargets(newMarker.lat, newMarker.lng)
 
     // Calculate the new coordinates including the new marker
-    const coords = data.map( t => t.coordinates)
-  
-    // Create the polygon before setting state
-    const newSquares = new google.maps.Polygon({
-      paths: coords,
-      strokeColor: "#FF0000",
-      strokeOpacity: 0.8,
-      strokeWeight: 2,
-      fillColor: "#FF0000",
-      fillOpacity: 0.35,
+    squares.forEach( sq => {
+
+      sq.shape = new google.maps.Polygon({
+        paths : sq.coordinates,
+        strokeColor: "#FF0000",
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: "#FF0000",
+        fillOpacity: 0.35
+      })
+
+      sq.shape.setMap(map)
+
     })
-  
-    //  TODO---------------------------------------------------
-    //  Remove Squares after selection
-    newSquares.setMap(map)
   
     // Pan to the new marker
     var latlng = new google.maps.LatLng(newMarker.lat, newMarker.lng)
@@ -80,7 +88,7 @@ export default function GoogleMaps() {
   
     // Now update the state, so the UI can update
     setMarker(newMarker)
-    setAvailbleTargets(data)
+    setAvailbleTargets(squares)
   
   }, [map])
 
@@ -140,5 +148,5 @@ export default function GoogleMaps() {
     //  TODO------------------------------------------------------
     //  Have to create a loading template
     <div>Loading map...</div>
-  );
+  )
 }
