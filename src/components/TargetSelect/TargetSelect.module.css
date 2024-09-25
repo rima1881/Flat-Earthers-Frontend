@@ -82,6 +82,9 @@
 .list li:hover{
     background-color: rgba(0, 0, 255, 0.3);
 }
+.active{
+    background-color: #0000ff;
+}
 .submit{
     width: 80%;
     padding: 5px;

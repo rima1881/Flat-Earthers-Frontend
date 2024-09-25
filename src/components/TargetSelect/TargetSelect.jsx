@@ -3,16 +3,21 @@ import style from "./TargetSelect.module.css"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 
-export default function TargetSelect(props){
+export default function TargetSelect({options, clearOptions}){
 
-    const [ selectedOption , setSelectedOption ] = useState()
-    const [ isOn , setIsOn ] = props.isOn
+    const closeHandle = () => {
+        clearOptions()
+    }
 
-    const closeHandle = () => setIsOn(false)
+    const isOn = options.length > 0
 
-    for(let i=0; i < props.num;i++)
 
-    
+    const OptionTemplate = ({isActive , text}) => (<li className={ isActive ? style.active : ""}>
+        <span>{ text }</span>
+    </li>)
+
+    const renderedOptions = options.map( ( _ , index) => <OptionTemplate isActive={false} text={"Option " + (index + 1)} key={index} /> )
+
 
     return (
     <div className={isOn ? style.containerOn : style.containeroff}>
@@ -22,15 +27,7 @@ export default function TargetSelect(props){
         </div>
         <div className={style.body}>
             <ul className={style.list}>
-                <li>
-                    <span>Option 1</span>
-                </li>
-                <li> 
-                    <span>Option 2</span>
-                </li>
-                <li>
-                    <span>Option 3</span>
-                </li>
+                {renderedOptions}
             </ul>
             <button className={style.submit}>Submit</button>
         </div>

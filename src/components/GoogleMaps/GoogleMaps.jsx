@@ -1,7 +1,7 @@
-import React, { useState, useCallback, useMemo , useContext, useEffect } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import style from "./GoogleMaps.module.css";
-import  { useTarget , useAvailableTargets } from "../../utils/useTarget"
+import  { useTarget , useWRS2 } from "../../utils/useTarget"
 import { square } from "@turf/turf";
 import SearchBox from "../SearchBox";
 import TargetSelect from "../TargetSelect/TargetSelect";
@@ -24,23 +24,6 @@ const libraries = ["places"]
 
 export default function GoogleMaps() {
 
-  useEffect(() => {
-    const handleBeforeUnload = (event) => {
-      console.log("Page is about to refresh or be closed.");
-      // You can customize the message shown to the user (modern browsers may ignore this)
-      const message = "Are you sure you want to leave?";
-      event.returnValue = message; // This is for older browsers
-      return message; // This is for modern browsers
-    };
-
-    window.addEventListener('beforeunload', handleBeforeUnload);
-
-    // Cleanup the event listener on component unmount
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, []);
-
   //prerequisite for loading google maps
   const { isLoaded, loadError } = useJsApiLoader({
     id: "google-map-script",
@@ -51,15 +34,17 @@ export default function GoogleMaps() {
   //setting the map and the marker
   const [marker, setMarker] = useState()
   const [map, setMap] = useState()
-  const [availableTargets , setAvailbleTargets] = useState()
 
-  //Implement our custom hooks
+  //  It is passed to select Options and cleared there
+  const [availableTargets , setAvailbleTargets] = useState([])
+  const clearAvailableTargets = useCallback( () => setAvailbleTargets([]) , [] )
+
+  //  Custom Hooks
+  const getAvailableTargets = useWRS2()
+  //  TODO----------------------------------------------
+  //  Implement A load function on saved Targets
   const { targets } = useTarget()
-  targets()
-  //console.log(targets())
 
-  console.log("kir")
-  const getAvailableTargets =  useAvailableTargets()
 
   //callback function for when the map is clicked
   const onMapClick = useCallback((e) => {
@@ -76,7 +61,7 @@ export default function GoogleMaps() {
     const coords = data.map( t => t.coordinates)
   
     // Create the polygon before setting state
-    const t = new google.maps.Polygon({
+    const newSquares = new google.maps.Polygon({
       paths: coords,
       strokeColor: "#FF0000",
       strokeOpacity: 0.8,
@@ -85,8 +70,9 @@ export default function GoogleMaps() {
       fillOpacity: 0.35,
     })
   
-    // Render the polygon on the map
-    t.setMap(map)
+    //  TODO---------------------------------------------------
+    //  Remove Squares after selection
+    newSquares.setMap(map)
   
     // Pan to the new marker
     var latlng = new google.maps.LatLng(newMarker.lat, newMarker.lng)
@@ -96,26 +82,30 @@ export default function GoogleMaps() {
     setMarker(newMarker)
     setAvailbleTargets(data)
   
-  }, [ getAvailableTargets , map])
+  }, [map])
 
 
-  //Function for when a place is searched
-  const onSearch = (location) => {
+  //  Function for when a place is searched
+  //  TODO---------------------------------------
+  //  Has to be synced with onMapClick 
+  const onSearch = useCallback( (location) => {
 
-    // TODO ---------------------------------------------
     setMarker({
       lat: location.lat(),
       lng: location.lng(),
     })
 
     map && map.panTo(location);
-  }
+  } , [map])
+
 
   //Function for when the map is loaded
   const onLoadMap = (mapInstance) => {
     setMap(mapInstance);
   }
 
+  //  TODO--------------------------------------
+  //  Have to created a Fail Load template
   if (loadError)
     return <div>Error loading map. Please try again later.</div>
   
@@ -143,10 +133,12 @@ export default function GoogleMaps() {
         {marker && <Marker position={{ lat: marker.lat, lng: marker.lng }} />}
       </GoogleMap>
 
-
+      <TargetSelect options={availableTargets} clearOptions={clearAvailableTargets} />
     </div>
       
   ) : (
+    //  TODO------------------------------------------------------
+    //  Have to create a loading template
     <div>Loading map...</div>
   );
 }

@@ -11,7 +11,7 @@ import { useState , useEffect , createContext, useContext, useCallback } from "r
 //  I might merge useTargets and useTargetsAPI toghater later
 
 
-const useAvailableTargets = () => {
+const useWRS2 = () => {
 
     const [ wrs2 , setWRS2 ] = useState([]);
 
@@ -55,7 +55,7 @@ const targetsContext = createContext()
 
 const useTarget = () => {
 
-    const TargetsProvider = ({ children }) => {
+    const TargetsProvider = useCallback( ({ children }) => {
 
         const [ targets , setTargets ] = useState("mammad")
         const addTarget = ( target ) => {
@@ -68,9 +68,9 @@ const useTarget = () => {
             </targetsContext.Provider>
         )
 
-    }
+    }, [targetsContext] )
 
-    const targets = () => useContext(targetsContext)
+    const targets = useCallback( () => useContext(targetsContext) , [targetsContext])
 
 
     return { TargetsProvider , targets }
@@ -80,18 +80,18 @@ const useTarget = () => {
 const useTargetsAPI = () => {
 
     //API Calling the sync the data
-    const pushTargets = (targets) => {
+    const pushTargets = useCallback((targets) => {
         console.log("pushing targets to server...")
         console.log(targets)
-    }
+    }, [])
 
-    const pullTargets = () => {
+    const pullTargets = useCallback(() => {
         console.log("pulling targets from server...")
         return ["Stored Targets !!!"]
-    }
+    }, [])
 
     return { pushTargets , pullTargets }
 }
 
 
-export { useTarget , useAvailableTargets , useTargetsAPI };
+export { useTarget , useWRS2 , useTargetsAPI };
