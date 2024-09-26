@@ -57,23 +57,23 @@ const useTarget = () => {
 
     const TargetsProvider = useCallback( ({ children }) => {
 
-        const [ targets , setTargets ] = useState("mammad")
+        const [ targets , setTargets ] = useState([])
         const addTarget = ( target ) => {
             setTargets ( prev => [...prev , target])
         }
 
         return (
-            <targetsContext.Provider value={[ targets , addTarget ]}>
+            <targetsContext.Provider value={{ targets , addTarget }}>
                 {children}
             </targetsContext.Provider>
         )
 
     }, [targetsContext] )
 
-    const targets = useCallback( () => useContext(targetsContext) , [targetsContext])
+    const targetsState = useCallback( () => useContext(targetsContext) , [targetsContext])
 
 
-    return { TargetsProvider , targets }
+    return { TargetsProvider , targetsState }
 
 }
 

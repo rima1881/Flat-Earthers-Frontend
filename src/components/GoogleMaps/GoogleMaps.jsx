@@ -48,7 +48,7 @@ export default function GoogleMaps() {
   const getAvailableTargets = useWRS2()
   //  TODO----------------------------------------------
   //  Implement A load function on saved Targets
-  const { targets } = useTarget()
+  const { targetsState } = useTarget()
 
   //callback function for when the map is clicked
   const onMapClick = useCallback((e) => {
@@ -111,24 +111,26 @@ export default function GoogleMaps() {
     setMap(mapInstance);
   }
 
+
+  const activeHandle = useCallback((index) => {
+
+    setAvailbleTargets(prev => {
+      const newState = [...prev];
+      newState.activeIndex = index;      
+      return newState;
+    })
+
+
+  } , [availableTargets] )
+
+  
+
+
   //  TODO--------------------------------------
   //  Have to created a Fail Load template
   if (loadError)
     return <div>Error loading map. Please try again later.</div>
   
-
-  const activeHandle = (index) => {
-
-    setAvailbleTargets(prev => {
-      const newState = [...prev];  // Create a new copy of the array
-    newState.activeIndex = index;  // Modify the copy
-    return newState;
-    })
-    console.log(availableTargets)
-    console.log("hello ggoog")
-  }
-
-  console.log("google map was rereneder")
 
   //optimization for map options
   const mapOptions = useMemo(

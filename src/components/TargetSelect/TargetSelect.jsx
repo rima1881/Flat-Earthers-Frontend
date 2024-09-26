@@ -1,10 +1,11 @@
 import style from "./TargetSelect.module.css"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faClose } from "@fortawesome/free-solid-svg-icons";
+import { useTarget } from "../../utils/useTarget";
 
 export default function TargetSelect({options, clearOptions, setActive}){
 
-    console.log("i was rerendered")
+    console.log(options)
 
     const isOn = options.length > 0
 
@@ -14,7 +15,20 @@ export default function TargetSelect({options, clearOptions, setActive}){
 
     const renderedOptions = options.map( ( _ , index) => <OptionTemplate isActive={options.activeIndex == index} text={"Option " + (index + 1)} key={index} index={index} /> )
 
+    const { targetsState } = useTarget()
+    const { addTarget } = targetsState()
+
+    console.log(targetsState())
+
     const submitHandle = () => {
+
+        const newTarget = options[options.activeIndex]
+
+        console.log(addTarget)
+
+
+        addTarget(newTarget)
+
         clearOptions()
     }
 

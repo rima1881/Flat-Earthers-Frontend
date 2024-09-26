@@ -83,15 +83,13 @@
     background-color: rgba(0, 0, 255, 0.3);
 }
 .active{
-    background-color: #000;
+    background-color: #0D85D8 !important;
 }
 .submit{
     width: 80%;
     padding: 5px;
-    background-color: rgba(0, 255, 0, 0.1);
-    border-style: solid;
-    border-color: #00ff00;
-    border-width: 1px;
+    background-color: #50C878;
+    border : none;
     height: 30px;
     margin: auto;
     margin-bottom: 10px;
