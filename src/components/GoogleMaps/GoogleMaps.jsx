@@ -49,6 +49,7 @@ export default function GoogleMaps() {
   //  TODO----------------------------------------------
   //  Implement A load function on saved Targets
   const { targetsState } = useTarget()
+  const { targets } = targetsState()
 
   //callback function for when the map is clicked
   const onMapClick = useCallback((e) => {

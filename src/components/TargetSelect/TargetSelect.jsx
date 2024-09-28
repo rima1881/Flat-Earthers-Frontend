@@ -5,10 +5,7 @@ import { useTarget } from "../../utils/useTarget";
 
 export default function TargetSelect({options, clearOptions, setActive}){
 
-    console.log(options)
-
     const isOn = options.length > 0
-
     const OptionTemplate = ({isActive , text , index}) => (<li className={ isActive ? style.active : ""} onClick={() =>setActive(index)}>
         <span>{ text }</span>
     </li>)
@@ -16,16 +13,18 @@ export default function TargetSelect({options, clearOptions, setActive}){
     const renderedOptions = options.map( ( _ , index) => <OptionTemplate isActive={options.activeIndex == index} text={"Option " + (index + 1)} key={index} index={index} /> )
 
     const { targetsState } = useTarget()
-    const { addTarget } = targetsState()
-
-    console.log(targetsState())
+    const { targets ,  addTarget } = targetsState()
 
     const submitHandle = () => {
 
-        const newTarget = options[options.activeIndex]
+        const { path , row } = options[options.activeIndex]
+        
+        //  TODO---------------------------------------------------
+        //  For now I am just storing path and rows and prediction in
+        //  our state but We probably have to change it in future 
+        const newTarget = { row : row , path : path , num: 5 , prediction : -1 }
 
-        console.log(addTarget)
-
+        console.log(newTarget)
 
         addTarget(newTarget)
 
@@ -48,5 +47,4 @@ export default function TargetSelect({options, clearOptions, setActive}){
             </div>
         </>
     )
-
 }

@@ -1,19 +1,19 @@
 import * as turf from "@turf/turf";
 import { useState , useEffect , createContext, useContext, useCallback } from "react";
+import Cookies from "js-cookie";
 
 //  I divided the functionalities into three hooks
 //  Because I was noticing unwanted reloads which 
 //  was caused due to the fact that all states where
 //  stored in one function and exporting the function
-//  was duplicating the states which made the huge mess
+//  was duplicating the states which made a huge mess
 
 
 //  I might merge useTargets and useTargetsAPI toghater later
 
-
 const useWRS2 = () => {
 
-    const [ wrs2 , setWRS2 ] = useState([]);
+    const [ wrs2 , setWRS2 ] = useState([])
 
     useEffect( () => {
 
@@ -39,9 +39,6 @@ const useWRS2 = () => {
             ))
         }, [wrs2])
     
-    //  Data is not loaded syncronessly so extract squares
-    //  needed an extra function. Might be able to be fixed
-    //  with useCallback
     return extractSquares
 
 }
@@ -57,9 +54,23 @@ const useTarget = () => {
 
     const TargetsProvider = useCallback( ({ children }) => {
 
-        const [ targets , setTargets ] = useState([])
+        //  Initial Load for targets after refresh
+        const [ targets , setTargets ] = useState(() => {
+            const savedTargets = Cookies.get('targets')
+            return savedTargets ? JSON.parse(savedTargets) : []
+        })
+
+        //  Instead of passing setTargets for changing targets we only
+        //  pass addTarget to insure nothing is removed accidentally and
+        //  the target cooky has the same data as our state
         const addTarget = ( target ) => {
-            setTargets ( prev => [...prev , target])
+
+            //  Store Targets in both cookies and state
+            setTargets((prev) => {
+                const newTargets = [...prev, target];
+                Cookies.set('targets', JSON.stringify(newTargets), { expires: 7 }); // Store in cookies with 7-day expiration
+                return newTargets;
+            })
         }
 
         return (
@@ -73,7 +84,7 @@ const useTarget = () => {
     const targetsState = useCallback( () => useContext(targetsContext) , [targetsContext])
 
 
-    return { TargetsProvider , targetsState }
+    return {  TargetsProvider , targetsState }
 
 }
 
