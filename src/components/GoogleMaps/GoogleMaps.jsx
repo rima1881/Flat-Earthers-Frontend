@@ -32,7 +32,7 @@ export default function GoogleMaps() {
 
   //setting the map and the marker
   const [marker, setMarker] = useState()
-  const [savedmarker, setsavedMarker] = useState([])
+  const [showMarkers, setShowMarkerts] = useState(false)
   const [map, setMap] = useState()
 
   //  It is passed to select Options and cleared there
@@ -53,9 +53,6 @@ export default function GoogleMaps() {
   const { targets } = targetsState()
 
   console.log(targets)
-  useEffect(()=>{
-      setsavedMarker(targets)
-  },[targets])
 
 
   
@@ -138,7 +135,23 @@ export default function GoogleMaps() {
   } , [availableTargets] )
 
   
+  const handleBtn = () => {
+    setShowMarkerts(prev => !prev)
+  }
 
+  const renderedTargets = targets.map((target, index) => (
+    <Marker
+      key={index}
+      position={{
+        lat: target.lat,
+        lng: target.lng,
+      }}
+      icon={{
+        url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", // Custom marker URL
+      }}
+      title={`Row: ${target.row}, Path: ${target.path}`}
+    />
+  ))
 
   //  TODO--------------------------------------
   //  Have to created a Fail Load template
@@ -157,6 +170,7 @@ export default function GoogleMaps() {
 
   return isLoaded ? (
     <div className={style.page}>
+      <button onClick={handleBtn}>Don't click me</button>
       <SearchBox onSearch={onSearch} inputClass={style.search} />
       <GoogleMap
         mapContainerStyle={containerStyle}
@@ -166,20 +180,7 @@ export default function GoogleMaps() {
         options={mapOptions}
         onLoad={onLoadMap}
       >
-         {savedmarker.map((target, index) => (
-          <Marker
-            key={index}
-            position={{
-              lat: target.lat,
-              lng: target.lng,
-            }}
-            icon={{
-            url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", // Custom marker URL
-            scaledSize: new window.google.maps.Size(30, 30) // Size of the marker
-          }}
-            title={`Row: ${target.row}, Path: ${target.path}`}
-          />
-         ))}
+         { showMarkers && renderedTargets}
         {marker && <Marker position={{ lat: marker.lat, lng: marker.lng }} />}
         
        
