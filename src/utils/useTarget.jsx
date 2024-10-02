@@ -72,9 +72,11 @@ const useTarget = () => {
                 return newTargets;
             })
         }
-
+        const deleteTarget = (index) => {
+            //delete function
+        };
         return (
-            <targetsContext.Provider value={{ targets , addTarget }}>
+            <targetsContext.Provider value={{ targets , addTarget, deleteTarget }}>
                 {children}
             </targetsContext.Provider>
         )
@@ -82,7 +84,7 @@ const useTarget = () => {
     }, [targetsContext] )
 
     const targetsState = useCallback( () => useContext(targetsContext) , [targetsContext])
-
+    
 
     return {  TargetsProvider , targetsState }
 

@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback, useMemo, useEffect } from "react";
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import style from "./GoogleMaps.module.css";
 import  { useTarget , useWRS2 } from "../../utils/useTarget"
@@ -32,6 +32,7 @@ export default function GoogleMaps() {
 
   //setting the map and the marker
   const [marker, setMarker] = useState()
+  const [savedmarker, setsavedMarker] = useState([])
   const [map, setMap] = useState()
 
   //  It is passed to select Options and cleared there
@@ -51,14 +52,21 @@ export default function GoogleMaps() {
   const { targetsState } = useTarget()
   const { targets } = targetsState()
 
+  console.log(targets)
+  useEffect(()=>{
+      setsavedMarker(targets)
+  },[targets])
+
+
+  
   //callback function for when the map is clicked
-  const onMapClick = useCallback((e) => {
+  const updateMarkerAndTargets = useCallback((lat, lng) => {
 
     clearAvailableTargets()
     
     const newMarker = {
-      lat: e.latLng.lat(),
-      lng: e.latLng.lng(),
+      lat: lat,
+      lng: lng,
     }
 
     // Add the new marker to targets
@@ -92,24 +100,29 @@ export default function GoogleMaps() {
   
   }, [ availableTargets , map])
 
+  const onMapClick = useCallback((e)=>{
+    const lat = e.latLng.lat();
+    const lng = e.latLng.lng();
+    updateMarkerAndTargets(lat, lng);
+  },[updateMarkerAndTargets])
+
 
   //  Function for when a place is searched
   //  TODO---------------------------------------
   //  Has to be synced with onMapClick 
   const onSearch = useCallback( (location) => {
 
-    setMarker({
-      lat: location.lat(),
-      lng: location.lng(),
-    })
+    const lat = location.lat();
+    const lng = location.lng();
+    updateMarkerAndTargets(lat, lng);
 
-    map && map.panTo(location);
-  } , [map])
+  } , [updateMarkerAndTargets])
 
 
   //Function for when the map is loaded
   const onLoadMap = (mapInstance) => {
     setMap(mapInstance);
+    
   }
 
 
@@ -153,10 +166,26 @@ export default function GoogleMaps() {
         options={mapOptions}
         onLoad={onLoadMap}
       >
+         {savedmarker.map((target, index) => (
+          <Marker
+            key={index}
+            position={{
+              lat: target.lat,
+              lng: target.lng,
+            }}
+            icon={{
+            url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", // Custom marker URL
+            scaledSize: new window.google.maps.Size(30, 30) // Size of the marker
+          }}
+            title={`Row: ${target.row}, Path: ${target.path}`}
+          />
+         ))}
         {marker && <Marker position={{ lat: marker.lat, lng: marker.lng }} />}
+        
+       
       </GoogleMap>
 
-      <TargetSelect options={availableTargets} setActive={activeHandle} clearOptions={clearAvailableTargets} />
+      <TargetSelect options={availableTargets} setActive={activeHandle} coordinates={marker ? { lat: marker.lat, lng: marker.lng } : { lat: 0, lng: 0 }} clearOptions={clearAvailableTargets} />
     </div>
       
   ) : (

@@ -2,8 +2,9 @@ import style from "./TargetSelect.module.css"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 import { useTarget } from "../../utils/useTarget";
+import { Marker } from "@react-google-maps/api";
 
-export default function TargetSelect({options, clearOptions, setActive}){
+export default function TargetSelect({options, clearOptions,coordinates, setActive}){
 
     const isOn = options.length > 0
     const OptionTemplate = ({isActive , text , index}) => (<li className={ isActive ? style.active : ""} onClick={() =>setActive(index)}>
@@ -18,11 +19,12 @@ export default function TargetSelect({options, clearOptions, setActive}){
     const submitHandle = () => {
 
         const { path , row } = options[options.activeIndex]
-        
+        const lat = coordinates.lat
+        const lng = coordinates.lng
         //  TODO---------------------------------------------------
         //  For now I am just storing path and rows and prediction in
         //  our state but We probably have to change it in future 
-        const newTarget = { row : row , path : path , num: 5 , prediction : -1 }
+        const newTarget = { row : row , path : path ,lat : lat, lng : lng, num: 5 , prediction : -1 }
 
         console.log(newTarget)
 

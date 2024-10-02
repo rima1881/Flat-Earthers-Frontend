@@ -4,32 +4,37 @@ import styles from "./Targets.module.css"
 export default function Targets(){
 
     const { targetsState } = useTarget()
-    const { targets } = targetsState()
-
-    const TargetTemplate = ({row , path , imageCount}) => (
+    const { targets, deleteTarget } = targetsState()
+    
+   
+    const TargetTemplate = ({row , path ,lat,lng, imageCount, key}) => (
+         
         <tr>
             <td>
                 {row}
             </td>
+           
             <td>
                 {path}
             </td>
             <td>
-                Fuck Umar
+                {lat}
+                
             </td>
             <td>
-                <span>Fuck Umar</span>
+                {lng}
             </td>
             <td>
                 <button>Examine</button>
                 <button>Download</button>
-                <button>Delete</button>
+                <button onClick={()=>deleteTarget(key)}>Delete</button>
             </td>
         </tr>
     )
-
+    
     const renderedTargets = targets.map( (target, index) => 
-        <TargetTemplate row={target.row} path={target.path} key={index} /> 
+        <TargetTemplate row={target.row} path={target.path} lat={target.lat} lng={target.lng} key={index} /> 
+    
     )
 
     return(
@@ -37,6 +42,7 @@ export default function Targets(){
             <div className={styles.header}><span>Selected Targets</span><button>Sync</button></div>
             <div className={styles.body}>
                 <table>
+                    
                     <th>
                         <td>
                             Row
@@ -53,8 +59,10 @@ export default function Targets(){
                         <td>
                             Action
                         </td>
+                        
                     </th>
                     {renderedTargets}
+                    
                 </table>
             </div>
 
