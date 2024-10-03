@@ -7,7 +7,7 @@ import Targets from "./pages/Targets/Targets";
 import Login from "./pages/Login/Login"
 import { useTarget } from "./utils/useTarget";
 import useAuth from "./utils/useAuth";
-import Download from "./pages/Download/Download";
+
 
 
 export default function App() {
@@ -25,7 +25,6 @@ export default function App() {
             <Route path="/" element={<Home />} />
             <Route path="/setting" element={<Setting />}/>
             <Route path="/targets" element={<Targets />} />
-            <Route path="/download" element={<Download/>}/>
             <Route path="/login" element={<Login />} />
 
           </Route>

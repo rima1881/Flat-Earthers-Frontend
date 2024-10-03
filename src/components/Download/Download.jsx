@@ -49,6 +49,7 @@ export default function Download(){
         download(targets);
     }
     return(
-        <button onClick={handleDownload}>Amir is gay</button>
+        <button onClick={handleDownload}>Amir make this button the same I need to go for my lab. I'm late</button>
     )
+    
 }

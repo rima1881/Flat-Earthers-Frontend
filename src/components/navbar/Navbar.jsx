@@ -1,6 +1,7 @@
 import style from "./Navbar.module.css"
 import { faGear , faMap , faCircleDot , faCircleDown } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import Download from "../Download/Download"
 
 export default function Navbar(){
     return (
@@ -25,8 +26,8 @@ export default function Navbar(){
                     </a>
                 </li>
                 <li>
-                    <a href="/download">
-                        <FontAwesomeIcon className={style.icon} icon={faCircleDown} />
+                    <a href="/">
+                        <Download /><FontAwesomeIcon className={style.icon} icon={faCircleDown} />
                     </a>
                 </li>
             </ul>
