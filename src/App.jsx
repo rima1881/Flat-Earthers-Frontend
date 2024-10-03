@@ -27,8 +27,8 @@ export default function App() {
             <Route path="/login" element={<Login />} />
 
           </Route>
-        </Routes> 
-      </AuthProvider>  
+        </Routes>
+        </AuthProvider>
     </TargetsProvider>
   )
 }

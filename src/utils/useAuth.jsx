@@ -1,10 +1,12 @@
 import { useState , createContext , useContext, useCallback } from "react"
+import Cookies from "js-cookie";
+
 
 const AuthContext = createContext()
 
 const useAuth = () => {
 
-    const AuthProvider = useCallback( () => {
+    const AuthProvider = useCallback( (({ children }) => {
 
         const [ user , setUser ] = useState( () => {
             const savedAuth = Cookies.get('auth')
@@ -27,12 +29,12 @@ const useAuth = () => {
             </AuthContext.Provider>
         )        
 
-    } , [AuthContext] )
+    }), [AuthContext]) 
 
-    const targetsState = useCallback( () => useContext(targetsContext) , [targetsContext])
+    const userState = useCallback( () => useContext(AuthContext) , [AuthContext])
 
 
-    return { AuthProvider , targetsState }
+    return { AuthProvider , userState }
 
 }
 
