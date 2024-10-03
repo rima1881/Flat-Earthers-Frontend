@@ -1,20 +1,47 @@
-import { useRef } from "react";
+import { useState } from "react";
 import styles from "./Login.module.css";
+import useAuth from "../../utils/useAuth";
 
 
-export default function Login(props) {
+export default function Login() {
 
-  console.log(props);
+  const { AuthProvider } = useAuth()
+  const { saveToken } = AuthProvider()
 
-  const setUserEmail = props.setUserEmail;
+  const [login , setLogin] = useState( { "email" : ""  , "password" : "" } )
+
+  const inputHandle = (event) => {
+    const { name , value} = event.target
+        setLogin(prevState => {
+            return {
+                ...prevState,
+                [name] : value
+            }
+        })
+
+  }
 
   const submitHandler = (e) => {
     e.preventDefault();
     
-    fetch("https://catfact.ninja/fact")
-      .then((response) => response.json())
+    fetch("http://localhost:5029/Register", {
+      method: 'POST', // Specify the method
+      headers: {
+        'Content-Type': 'application/json' 
+      },
+      body: JSON.stringify( { email : login.email , password : login.password } )
+    })
+      .then((response) => {
+        
+        if (!response.ok)
+          throw new Error('Network response was not ok ' + response.statusText);
+        
+        response.json()
+      })
       .then((data) => {
-        setUserEmail(data.fact);
+
+        co
+
       })
       .catch((err) => console.log(err));
 
@@ -26,7 +53,8 @@ export default function Login(props) {
 
     <div className={styles.loginForm}>
         <div className={styles.logo}></div>
-        <input type="text" placeholder="Notification Email" className={styles.inputEmail} />
+        <input name="email" type="text" placeholder="Notification Email" className={styles.inputEmail} value={login.email} onChange={inputHandle} />
+        <input name="password" type="password" placeholder="password" className={styles.innputPass} value={login.password} onChange={inputHandle} />
         <button className={styles.button} onClick={submitHandler}>Login</button>
     </div>
 

@@ -4,25 +4,31 @@ import Layout from "./pages/Layout/Layout";
 import Home from "./pages/Home/Home";
 import Setting from "./pages/setting/Setting";
 import Targets from "./pages/Targets/Targets";
+import Login from "./pages/Login/Login"
 import { useTarget } from "./utils/useTarget";
+import useAuth from "./utils/useAuth";
+
 
 export default function App() {
 
   const { TargetsProvider } = useTarget()
+  const { AuthProvider } = useAuth()
 
   return (          
     <TargetsProvider>
-      <Routes>
-        <Route path="/" element={<Layout />}>
+      <AuthProvider>
+        <Routes>
+          <Route path="/" element={<Layout />}>
 
+            {/* general Paths */}
+            <Route path="/" element={<Home />} />
+            <Route path="/setting" element={<Setting />}/>
+            <Route path="/targets" element={<Targets />} />
+            <Route path="/login" element={<Login />} />
 
-          {/* general Paths */}
-          <Route path="/" element={<Home />} />
-          <Route path="/setting" element={<Setting />}/>
-          <Route path="/targets" element={<Targets />} />
-
-        </Route>
-      </Routes>   
+          </Route>
+        </Routes> 
+      </AuthProvider>  
     </TargetsProvider>
   )
 }
