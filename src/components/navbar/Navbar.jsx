@@ -25,7 +25,7 @@ export default function Navbar(){
                     </a>
                 </li>
                 <li>
-                    <a href="/">
+                    <a href="/download">
                         <FontAwesomeIcon className={style.icon} icon={faCircleDown} />
                     </a>
                 </li>
