@@ -44,7 +44,7 @@ export default function Targets(){
                 {lng}
             </td>
             <td>
-                <button>Examine</button>
+                <a href={"examine/"+ id} >Examine</a>
                 <button>Download</button>
                 <button onClick={() => deleteHandle(id, index)}>Delete</button>
             </td>
