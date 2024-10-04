@@ -13,9 +13,11 @@ const useAuth = () => {
             return savedAuth ? JSON.parse(savedAuth) : { email : '' , token : '' }
         })
 
-        const saveUser = (user) => {
+        const saveUser = (data) => {
             
-
+            const parsedData = { email : data.user.email , token : data.token }
+            Cookies.set('auth' , JSON.stringify(parsedData), {expires: 1/24} )
+            setUser(parsedData)
 
         }
 
@@ -29,9 +31,7 @@ const useAuth = () => {
                 body: JSON.stringify( { email : user.email , password : user.password } )
             })
             .then((response) => {
-                  
-              console.log(response)
-          
+                            
               if (!response.ok)
                 throw new Error('Network response was not ok ' + response.statusText);
                   
@@ -43,8 +43,6 @@ const useAuth = () => {
             })
             .catch((err) => console.log(err))
 
-            Cookies.set('auth', JSON.stringify(user), { expires: 1 / 24 })
-            setUser( user )
         }
 
         const signUp = ( user ) => {

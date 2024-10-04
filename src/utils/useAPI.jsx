@@ -16,14 +16,18 @@ const useAPI = () => {
 
         console.log(targets)
 
+        return false
+
     }, [user])
 
     const pullTargets = useCallback((  ) => {
 
         const token = user.token
 
-
         console.log("pulling targets from server...")
+
+        return false
+
     }, [user])
 
     const deleteTargetServer = useCallback( (target) => {
@@ -31,7 +35,8 @@ const useAPI = () => {
         const token = user.token
 
         console.log("target is getting deleted from server")
-        
+
+        return false
 
     } , [user])
 
