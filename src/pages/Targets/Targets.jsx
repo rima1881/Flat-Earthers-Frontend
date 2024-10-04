@@ -8,10 +8,25 @@ export default function Targets(){
     const { targetsState } = useTarget()
     const { targets, deleteTarget } = targetsState()
 
-    
-    const hasLoggedIn = userState.token != ""
-   
-    const TargetTemplate = ({row , path , lat, lng, key}) => (
+    const { userState } = useAuth()
+       
+    const { user } = userState()
+
+    const hasLoggedIn = user.token != ""
+
+    const deleteHandle = (targetId , index) => {
+
+        //  Delete local targets
+        deleteTarget(index)
+
+        //  Delete server targets
+        if (hasLoggedIn){
+            console.log("i have to make api call :(")
+        }
+
+    }
+
+    const TargetTemplate = ({id, index, row, path, lat, lng}) => (
          
         <tr>
             <td>
@@ -31,42 +46,44 @@ export default function Targets(){
             <td>
                 <button>Examine</button>
                 <button>Download</button>
-                <button onClick={()=>deleteTarget(key)}>Delete</button>
+                <button onClick={() => deleteHandle(id, index)}>Delete</button>
             </td>
         </tr>
     )
     
     const renderedTargets = targets.map( (target, index) => 
-        <TargetTemplate row={target.row} path={target.path} lat={target.lat} lng={target.lng} key={index} /> 
+        <TargetTemplate row={target.row} path={target.path} lat={target.lat} lng={target.lng} key={index} index={index} /> 
     
     )
 
     return(
         <div className={styles.container}>
-            <div className={styles.header}><span>Selected Targets</span><button disabled={!hasLoggedIn}>Sync</button></div>
+            <div className={styles.header}><span>Selected Targets</span><button>Upload</button><button disabled={!hasLoggedIn}>Sync</button></div>
             <div className={styles.body}>
                 <table>
-                    
-                    <th>
-                        <td>
+                    <thead>
+                    <tr>
+                        <th>
                             Row
-                        </td>
-                        <td>
+                        </th>
+                        <th>
                             Path
-                        </td>
-                        <td>
+                        </th>
+                        <th>
                             Latitude
-                        </td>
-                        <td>
+                        </th>
+                        <th>
                             Longitude
-                        </td>
-                        <td>
+                        </th>
+                        <th>
                             Action
-                        </td>
+                        </th>
                         
-                    </th>
-                    {renderedTargets}
-                    
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {renderedTargets}
+                    </tbody>
                 </table>
             </div>
 

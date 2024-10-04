@@ -1,7 +1,6 @@
 import style from "./Navbar.module.css"
 import { faGear , faMap , faCircleDot , faCircleDown } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import Download from "../Download/Download"
 import { useTarget } from "../../utils/useTarget"
 
 export default function Navbar(){
