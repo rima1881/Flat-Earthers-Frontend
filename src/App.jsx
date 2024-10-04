@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Routes , Route} from "react-router-dom"
 import Layout from "./pages/Layout/Layout";
 import Home from "./pages/Home/Home";
@@ -7,7 +7,7 @@ import Login from "./pages/Login/Login"
 import { useTarget } from "./utils/useTarget";
 import useAuth from "./utils/useAuth";
 import ExamineTarget from "./pages/ExamineTarget/ExamineTarget";
-
+import PrivateRoutes from "./utils/privateRoutes";
 
 export default function App() {
 
@@ -24,7 +24,12 @@ export default function App() {
             <Route path="/" element={<Home />} />
             <Route path="/targets" element={<Targets />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/examine/:targetId" element={<ExamineTarget />} />
+
+            {/* user Paths */}
+            <Route element={<PrivateRoutes />}>
+              <Route path="/examine/:targetId" element={<ExamineTarget />} />
+            </Route>
+
 
           </Route>
         </Routes>

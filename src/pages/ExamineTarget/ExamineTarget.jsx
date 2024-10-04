@@ -6,28 +6,11 @@ import useAPI from "../../utils/useAPI"
 export default function ExamineTarget(){
 
     const { targetId } = useParams()
-    const { userState } = useAuth()
-    const { user } = userState()
     const { getTargetDetails } = useAPI()
 
-    const [ target , setTarget] = useState( { 
-        lat: 0,
-        lng: 0,
-        count: 0,
-        path: 0,
-        row: 0,
-        imgUrl : "/sample-target.webp",
-        gridUrl : "/sample-target.webp",
-        Notification : 0 
-    })
+    const [ target , setTarget] = useState()
 
-
-    //
-    useEffect(() => {
-
-
-
-    } , [])
+    setTarget( getTargetDetails(targetId) )
 
     return (
         <div className={styles.container}>
@@ -46,7 +29,7 @@ export default function ExamineTarget(){
                 <span>Path : {target.path} </span>
                 <span>Row : {target.row} </span>
                 <span>Image Count : <input type="number" value={target.count} /></span>
-                <span>Notification offset : <input type="date" value={target.count} /></span>
+                <span>Notification offset : <input type="date" value={target.offset} /></span>
                 <button>Submit</button>
             </div>
         </div>

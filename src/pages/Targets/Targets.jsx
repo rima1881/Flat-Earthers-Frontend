@@ -13,7 +13,7 @@ export default function Targets(){
     const { userState } = useAuth()
     const { user } = userState()
 
-    const hasLoggedIn = user.token != ""
+    const hasLoggedIn = user.token != ''
 
     const deleteHandle = (targetId , index) => {
 
@@ -33,7 +33,7 @@ export default function Targets(){
     const handlePush = () => {
         if (hasLoggedIn)
             pushTargets()
-    } 
+    }
 
     const TargetTemplate = ({id, index, row, path, lat, lng}) => (
          

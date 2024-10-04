@@ -5,8 +5,8 @@ import { useCallback } from "react"
 const useAPI = () => {
 
     const { userState } = useAuth()
+    const { user , logout } = userState()
 
-    const { user , forgetUser } = userState()
 
     //API Calling the sync the data
     const pushTargets = useCallback((targets ) => {
@@ -26,19 +26,23 @@ const useAPI = () => {
         console.log("pulling targets from server...")
     }, [user])
 
-    const deleteTargetServer = useCallback( (target ) => {
+    const deleteTargetServer = useCallback( (target) => {
 
         const token = user.token
 
-        console.log("target is getting deleted from sercer")
+        console.log("target is getting deleted from server")
+        
 
     } , [user])
 
-    const getTargetDetails = useCallback( (target ) => {
+    const getTargetDetails = useCallback( (targetId) => {
 
         const token = user.token
 
         console.log("fetching details from server")
+
+        return { row : 0 , path : 0 , Path : 0 , Row : 0 , count : 0 , offset : 0 }
+
     } , [user])
 
     return { pushTargets , pullTargets , deleteTargetServer , getTargetDetails }

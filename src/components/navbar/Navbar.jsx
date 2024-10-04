@@ -1,5 +1,5 @@
 import style from "./Navbar.module.css"
-import { faCircleUp , faMap , faCircleDot , faCircleDown , faLock } from "@fortawesome/free-solid-svg-icons"
+import { faCircleUp , faMap , faCircleDot , faCircleDown , faSignIn , faSignOut } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useTarget } from "../../utils/useTarget"
 import useAuth from "../../utils/useAuth"
@@ -11,14 +11,20 @@ export default function Navbar(){
     const { downloadTarget } = targetsState()
 
     const { userState } = useAuth()
-    const { user } = userState()
+    const { user , logout } = userState()
 
 
-    const hasLoggedIn = user.token != ""
+    const hasLoggedIn = user.token != null
 
     const loginOption = <li>
         <a href="/login">
-            <FontAwesomeIcon className={style.icon} icon={faLock} />
+            <FontAwesomeIcon className={style.icon} icon={faSignIn} />
+        </a>
+    </li>
+
+    const logoutOption = <li>
+        <a href="#" onClick={logout}>
+            <FontAwesomeIcon className={style.icon} icon={faSignOut} />
         </a>
     </li>
 
@@ -48,7 +54,7 @@ export default function Navbar(){
                         <FontAwesomeIcon className={style.icon} icon={faCircleDown} />
                     </a>
                 </li>
-                {!hasLoggedIn && loginOption}
+                {hasLoggedIn ? loginOption : logoutOption}
             </ul>
         </div>
     )
