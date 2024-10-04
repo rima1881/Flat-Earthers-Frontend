@@ -7,7 +7,7 @@ import Targets from "./pages/Targets/Targets";
 import Login from "./pages/Login/Login"
 import { useTarget } from "./utils/useTarget";
 import useAuth from "./utils/useAuth";
-
+import ExamineTarget from "./pages/ExamineTarget/ExamineTarget";
 
 
 export default function App() {
@@ -26,6 +26,7 @@ export default function App() {
             <Route path="/setting" element={<Setting />}/>
             <Route path="/targets" element={<Targets />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/examine/:targetId" element={<ExamineTarget />} />
 
           </Route>
         </Routes>
