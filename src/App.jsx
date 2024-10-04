@@ -29,7 +29,7 @@ export default function App() {
 
           </Route>
         </Routes>
-        </AuthProvider>
+      </AuthProvider>
     </TargetsProvider>
   )
 }

@@ -1,12 +1,13 @@
 import { useState } from "react";
 import styles from "./Login.module.css";
 import useAuth from "../../utils/useAuth";
+import { dark } from "@mui/material/styles/createPalette";
 
 
 export default function Login() {
 
-  const { AuthProvider } = useAuth()
-  const { saveToken } = AuthProvider()
+  const { userState } = useAuth()
+  const { saveUser } = userState()
 
   const [login , setLogin] = useState( { "email" : ""  , "password" : "" } )
 
@@ -23,6 +24,8 @@ export default function Login() {
 
   const submitHandler = (e) => {
     e.preventDefault();
+
+    console.log("I was clicked")
     
     fetch("http://localhost:5029/Register", {
       method: 'POST', // Specify the method
@@ -33,14 +36,16 @@ export default function Login() {
     })
       .then((response) => {
         
+        console.log(response)
+
         if (!response.ok)
           throw new Error('Network response was not ok ' + response.statusText);
         
-        response.json()
+        return response.json()
       })
       .then((data) => {
 
-        co
+        console.log(data)
 
       })
       .catch((err) => console.log(err));

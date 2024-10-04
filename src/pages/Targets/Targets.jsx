@@ -1,13 +1,17 @@
 import { useTarget } from "../../utils/useTarget"
 import styles from "./Targets.module.css"
+import useAuth from "../../utils/useAuth"
+
 
 export default function Targets(){
 
     const { targetsState } = useTarget()
     const { targets, deleteTarget } = targetsState()
+
     
+    const hasLoggedIn = userState.token != ""
    
-    const TargetTemplate = ({row , path ,lat,lng, imageCount, key}) => (
+    const TargetTemplate = ({row , path , lat, lng, key}) => (
          
         <tr>
             <td>
@@ -39,7 +43,7 @@ export default function Targets(){
 
     return(
         <div className={styles.container}>
-            <div className={styles.header}><span>Selected Targets</span><button>Sync</button></div>
+            <div className={styles.header}><span>Selected Targets</span><button disabled={!hasLoggedIn}>Sync</button></div>
             <div className={styles.body}>
                 <table>
                     

@@ -6,7 +6,7 @@ const AuthContext = createContext()
 
 const useAuth = () => {
 
-    const AuthProvider = useCallback( (({ children }) => {
+    const AuthProvider = useCallback( ({ children }) => {
 
         const [ user , setUser ] = useState( () => {
             const savedAuth = Cookies.get('auth')
@@ -29,7 +29,7 @@ const useAuth = () => {
             </AuthContext.Provider>
         )        
 
-    }), [AuthContext]) 
+    }, [AuthContext])
 
     const userState = useCallback( () => useContext(AuthContext) , [AuthContext])
 
