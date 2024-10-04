@@ -26,6 +26,15 @@ export default function Targets(){
 
     }
 
+    const handleSync = () => {
+
+        if (user.token == "")
+            return
+
+        console.log("I have to make another api call here :(")
+
+    }
+
     const TargetTemplate = ({id, index, row, path, lat, lng}) => (
          
         <tr>
@@ -45,7 +54,6 @@ export default function Targets(){
             </td>
             <td>
                 <a href={"examine/"+ id} >Examine</a>
-                <button>Download</button>
                 <button onClick={() => deleteHandle(id, index)}>Delete</button>
             </td>
         </tr>

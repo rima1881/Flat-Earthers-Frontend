@@ -72,8 +72,15 @@ const useTarget = () => {
                 return newTargets;
             })
         }
+
         const deleteTarget = (index) => {
-            //delete function
+            
+            const newTargets = targets.splice(index, 1)
+            console.log(newTargets)
+            Cookies.set('targets', JSON.stringify(newTargets), { expires: 7 }); // Store in cookies with 7-day expiration
+
+            setTargets(newTargets)
+
         }
 
         const downloadTarget = () => {

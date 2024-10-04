@@ -20,7 +20,7 @@ const useAuth = () => {
 
         const forgetUser = () => {
             Cookies.remove('auth')
-            setToken( null )
+            setUser( { email : '' , token : ''} )
         }
         
         return (
