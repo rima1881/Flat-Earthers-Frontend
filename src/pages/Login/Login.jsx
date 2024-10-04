@@ -9,7 +9,7 @@ export default function Login() {
   const { logIn , signUp } = userState()
 
   const [ isLoggingIn , setIsLogginIn ] = useState(true)
-  const [ formData , setFormData] = useState( { "email" : ""  , "password" : "" } )
+  const [ formData , setFormData] = useState( { email : ""  , password : "" , confPwd : "" } )
 
   const inputHandle = (event) => {
     const { name , value} = event.target
@@ -26,23 +26,22 @@ export default function Login() {
     e.preventDefault()
 
     if(isLoggingIn)
-      logIn()
+      logIn(formData)
     else
-      signUp()
+      signUp(formData)
 
   };
 
-  const LoginTemplate = <div className={styles.loginForm}>
-    <div className={styles.logo}></div>
+  const LoginTemplate = <>
     <input name="email" type="text" placeholder="Notification Email" className={styles.inputEmail} value={formData.email} onChange={inputHandle} />
     <input name="password" type="password" placeholder="password" className={styles.innputPass} value={formData.password} onChange={inputHandle} />
-    <button className={styles.button} onClick={submitHandler}>Login</button>
-  </div>
+  </>
 
-  const SignUpTemplate = <div>
-    <p>Fuck umar from sign up</p>
-    <button className={styles.button} onClick={submitHandler}>Login</button>
-  </div>
+  const SignUpTemplate = <>
+    <input name="email" type="text" placeholder="Notification Email" className={styles.inputEmail} value={formData.email} onChange={inputHandle} />
+    <input name="password" type="password" placeholder="password" className={styles.innputPass} value={formData.password} onChange={inputHandle} />
+    <input name="confPwd" type="password" placeholder="password" className={styles.innputPass} value={formData.confPwd} onChange={inputHandle} />
+  </>
 
   const swithHandle = () => {
     setIsLogginIn(prev => !prev)
@@ -50,8 +49,13 @@ export default function Login() {
 
   return <div className={styles.container}>
 
-    <button onClick={swithHandle}> Login | SignUp </button>
-    {isLoggingIn ? LoginTemplate : SignUpTemplate}
+
+    <div className={styles.loginForm}>
+      <button onClick={swithHandle}> Login | SignUp </button>
+      <div className={styles.logo}></div>
+      {isLoggingIn ? LoginTemplate : SignUpTemplate}
+      <button className={styles.button} onClick={submitHandler}>{isLoggingIn ? "Login" : "SignUp"}</button>
+    </div>
 
   </div>;
 }

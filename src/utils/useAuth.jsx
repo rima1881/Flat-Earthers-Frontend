@@ -13,6 +13,12 @@ const useAuth = () => {
             return savedAuth ? JSON.parse(savedAuth) : { email : '' , token : '' }
         })
 
+        const saveUser = (user) => {
+            
+
+
+        }
+
         const logIn = ( user ) => {
 
             fetch("http://localhost:5029/login", {
@@ -20,7 +26,7 @@ const useAuth = () => {
                 headers: {
                     'Content-Type': 'application/json' 
                 },
-                body: JSON.stringify( { email : login.email , password : login.password } )
+                body: JSON.stringify( { email : user.email , password : user.password } )
             })
             .then((response) => {
                   
@@ -33,10 +39,7 @@ const useAuth = () => {
             })
             .then((data) => {
           
-                console.log(data)
-          
-                //  Fuck Umar
-                saveUser({ email : "fuckUmar@fuckUmar.fuckUmar" , token : "fuckUmarfuckUmarfuckUmar" })
+                saveUser(data)
             })
             .catch((err) => console.log(err))
 
@@ -46,28 +49,23 @@ const useAuth = () => {
 
         const signUp = ( user ) => {
 
-            fetch("http://localhost:5029/login", {
+            fetch("http://localhost:5029/Register", {
                 method: 'POST', // Specify the method
                 headers: {
                     'Content-Type': 'application/json' 
                 },
-                body: JSON.stringify( { email : login.email , password : login.password } )
+                body: JSON.stringify( { email : user.email , password : user.password } )
             })
             .then((response) => {
-                  
-              console.log(response)
-          
+                            
               if (!response.ok)
                 throw new Error('Network response was not ok ' + response.statusText);
                   
                 return response.json()
             })
             .then((data) => {
-          
-                console.log(data)
-          
-                //  Fuck Umar
-                saveUser({ email : "fuckUmar@fuckUmar.fuckUmar" , token : "fuckUmarfuckUmarfuckUmar" })
+                    
+                saveUser(data)
             })
             .catch((err) => console.log(err))
 
