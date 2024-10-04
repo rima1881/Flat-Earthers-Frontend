@@ -50,6 +50,7 @@ const useWRS2 = () => {
 
 const targetsContext = createContext()
 
+
 const useTarget = () => {
 
     const TargetsProvider = useCallback( ({ children }) => {
@@ -64,6 +65,9 @@ const useTarget = () => {
         //  pass addTarget to insure nothing is removed accidentally and
         //  the target cooky has the same data as our state
         const addTarget = ( target ) => {
+
+            // Get Prediction !!!
+            target.prediction = -1
 
             //  Store Targets in both cookies and state
             setTargets((prev) => {
@@ -137,21 +141,4 @@ const useTarget = () => {
 
 }
 
-const useTargetsAPI = () => {
-
-    //API Calling the sync the data
-    const pushTargets = useCallback((targets) => {
-        console.log("pushing targets to server...")
-        console.log(targets)
-    }, [])
-
-    const pullTargets = useCallback(() => {
-        console.log("pulling targets from server...")
-        return ["Stored Targets !!!"]
-    }, [])
-
-    return { pushTargets , pullTargets }
-}
-
-
-export { useTarget , useWRS2 , useTargetsAPI };
+export { useTarget , useWRS2 };

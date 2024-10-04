@@ -14,19 +14,15 @@ export default function TargetSelect({options, clearOptions,coordinates, setActi
     const renderedOptions = options.map( ( _ , index) => <OptionTemplate isActive={options.activeIndex == index} text={"Option " + (index + 1)} key={index} index={index} /> )
 
     const { targetsState } = useTarget()
-    const { targets ,  addTarget } = targetsState()
+    const { addTarget } = targetsState()
 
     const submitHandle = () => {
 
         const { path , row } = options[options.activeIndex]
         const lat = coordinates.lat
         const lng = coordinates.lng
-        //  TODO---------------------------------------------------
-        //  For now I am just storing path and rows and prediction in
-        //  our state but We probably have to change it in future 
-        const newTarget = { row : row , path : path ,lat : lat, lng : lng, num: 5 , prediction : -1 }
 
-        console.log(newTarget)
+        const newTarget = { row : row , path : path ,lat : lat, lng : lng, num: 5 }
 
         addTarget(newTarget)
 

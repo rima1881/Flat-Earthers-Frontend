@@ -51,10 +51,6 @@ export default function GoogleMaps() {
   //  Implement A load function on saved Targets
   const { targetsState } = useTarget()
   const { targets } = targetsState()
-
-  console.log(targets)
-
-
   
   //callback function for when the map is clicked
   const updateMarkerAndTargets = useCallback((lat, lng) => {
@@ -153,8 +149,6 @@ export default function GoogleMaps() {
     />
   ))
 
-  //  TODO--------------------------------------
-  //  Have to created a Fail Load template
   if (loadError)
     return <div>Error loading map. Please try again later.</div>
   
@@ -190,8 +184,6 @@ export default function GoogleMaps() {
     </div>
       
   ) : (
-    //  TODO------------------------------------------------------
-    //  Have to create a loading template
     <div>Loading map...</div>
   )
 }

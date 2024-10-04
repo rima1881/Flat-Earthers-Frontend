@@ -1,10 +1,14 @@
 import styles from "./ExamineTarget.module.css"
 import { useParams } from "react-router-dom"
 import { useEffect , useState } from "react"
+import useAPI from "../../utils/useAPI"
 
 export default function ExamineTarget(){
 
     const { targetId } = useParams()
+    const { userState } = useAuth()
+    const { user } = userState()
+    const { getTargetDetails } = useAPI()
 
     const [ target , setTarget] = useState( { 
         lat: 0,
@@ -17,10 +21,12 @@ export default function ExamineTarget(){
         Notification : 0 
     })
 
+
     //
     useEffect(() => {
-        //  Have to fetch the target from the API
-        console.log("fuck umar from console")
+
+
+
     } , [])
 
     return (

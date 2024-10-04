@@ -1,13 +1,26 @@
 import style from "./Navbar.module.css"
-import { faGear , faMap , faCircleDot , faCircleDown } from "@fortawesome/free-solid-svg-icons"
+import { faCircleUp , faMap , faCircleDot , faCircleDown , faLock } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useTarget } from "../../utils/useTarget"
+import useAuth from "../../utils/useAuth"
+
 
 export default function Navbar(){
 
     const { targetsState } = useTarget()
     const { downloadTarget } = targetsState()
 
+    const { userState } = useAuth()
+    const { user } = userState()
+
+
+    const hasLoggedIn = user.token != ""
+
+    const loginOption = <li>
+        <a href="/login">
+            <FontAwesomeIcon className={style.icon} icon={faLock} />
+        </a>
+    </li>
 
     return (
         <div className={style.container}>
@@ -26,15 +39,16 @@ export default function Navbar(){
                     </a>
                 </li>
                 <li>
-                    <a href="/setting">
-                        <FontAwesomeIcon className={style.icon} icon={faGear} />
+                    <a href="/upload">
+                        <FontAwesomeIcon className={style.icon} icon={faCircleUp} />
                     </a>
                 </li>
                 <li>
-                    <a href="/" onClick={() => downloadTarget()}>
+                    <a href="#" onClick={() => downloadTarget()}>
                         <FontAwesomeIcon className={style.icon} icon={faCircleDown} />
                     </a>
                 </li>
+                {!hasLoggedIn && loginOption}
             </ul>
         </div>
     )

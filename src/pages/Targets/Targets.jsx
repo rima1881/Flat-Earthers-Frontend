@@ -1,4 +1,5 @@
 import { useTarget } from "../../utils/useTarget"
+import useAPI from "../../utils/useAPI"
 import styles from "./Targets.module.css"
 import useAuth from "../../utils/useAuth"
 
@@ -7,9 +8,9 @@ export default function Targets(){
 
     const { targetsState } = useTarget()
     const { targets, deleteTarget } = targetsState()
+    const { deleteTargetServer , pushTargets , pullTargets } = useAPI()
 
     const { userState } = useAuth()
-       
     const { user } = userState()
 
     const hasLoggedIn = user.token != ""
@@ -20,20 +21,19 @@ export default function Targets(){
         deleteTarget(index)
 
         //  Delete server targets
-        if (hasLoggedIn){
-            console.log("i have to make api call :(")
-        }
-
+        if (hasLoggedIn)
+            deleteTargetServer(targetId)
     }
 
     const handleSync = () => {
-
-        if (user.token == "")
-            return
-
-        console.log("I have to make another api call here :(")
-
+        if (hasLoggedIn)
+            pullTargets()
     }
+
+    const handlePush = () => {
+        if (hasLoggedIn)
+            pushTargets()
+    } 
 
     const TargetTemplate = ({id, index, row, path, lat, lng}) => (
          
@@ -66,7 +66,11 @@ export default function Targets(){
 
     return(
         <div className={styles.container}>
-            <div className={styles.header}><span>Selected Targets</span><button>Upload</button><button disabled={!hasLoggedIn}>Sync</button></div>
+            <div className={styles.header}>
+                <span>Selected Targets</span>
+                <button disabled={!hasLoggedIn} onClick={handlePush}>Upload</button>
+                <button disabled={!hasLoggedIn} onClick={handleSync} >Sync</button>
+            </div>
             <div className={styles.body}>
                 <table>
                     <thead>

@@ -19,6 +19,7 @@ const useAuth = () => {
         }
 
         const forgetUser = () => {
+            alert("Your token has expired")
             Cookies.remove('auth')
             setUser( { email : '' , token : ''} )
         }
