@@ -2,14 +2,6 @@ import * as turf from "@turf/turf";
 import { useState , useEffect , createContext, useContext, useCallback } from "react";
 import Cookies from "js-cookie";
 
-//  I divided the functionalities into three hooks
-//  Because I was noticing unwanted reloads which 
-//  was caused due to the fact that all states where
-//  stored in one function and exporting the function
-//  was duplicating the states which made a huge mess
-
-
-//  I might merge useTargets and useTargetsAPI toghater later
 
 const useWRS2 = () => {
 
@@ -43,11 +35,6 @@ const useWRS2 = () => {
 
 }
 
-//  The targets are shared Between Google Map API and our 
-//  SelectTarget Componet. In order to share this state
-//  Between To Components useContext was used. IDK easier
-//  way in react :(
-
 const targetsContext = createContext()
 
 
@@ -66,14 +53,37 @@ const useTarget = () => {
         //  the target cooky has the same data as our state
         const addTarget = ( target ) => {
 
-            // Get Prediction !!!
-            target.prediction = -1
+            // Get Prediction
+            const params = new URLSearchParams({
+                path: target.path,
+                row: target.row
+            })
 
-            //  Store Targets in both cookies and state
-            setTargets((prev) => {
-                const newTargets = [...prev, target];
-                Cookies.set('targets', JSON.stringify(newTargets), { expires: 7 }); // Store in cookies with 7-day expiration
-                return newTargets;
+            const requestURL = `http://localhost:5029/Prediction?${params.toString()}`
+            fetch(requestURL)
+            .then( response => {
+                
+                if (!response.ok)
+                    throw new Error('Network response was not ok');
+                
+                return response.json();
+            })
+            .then( data => {
+
+                target.prediction = data.prediction
+                
+                //Store Target
+                setTargets((prev) => {
+                    const newTargets = [...prev, target];
+                    Cookies.set('targets', JSON.stringify(newTargets), { expires: 7 }); // Store in cookies with 7-day expiration
+                    return newTargets;
+                })
+
+            })
+            .catch( error => {
+                //  Error Fetching Path & Row
+                //  Top tier Error Management
+                console.log(error)
             })
         }
 
@@ -81,10 +91,29 @@ const useTarget = () => {
             
             const newTargets = targets.splice(index, 1)
             console.log(newTargets)
-            Cookies.set('targets', JSON.stringify(newTargets), { expires: 7 }); // Store in cookies with 7-day expiration
+            Cookies.set('targets', JSON.stringify(newTargets), { expires: 7 }) // Store in cookies with 7-day expiration
 
             setTargets(newTargets)
 
+        }
+
+        const getTargetImage = ( path , row , num ) => {
+
+            const params = new URLSearchParams({
+                path: path,
+                row: row,
+                numResults : num
+            })
+
+            const requestUrl = `http://localhost:5029/Images?${params.toString()}`
+            fetch(requestUrl)
+            .then( response => {
+                
+                if (!response.ok)
+                    throw new Error('Network response was not ok');
+                
+                return response.json();
+            })
         }
 
         const downloadTarget = () => {
@@ -127,7 +156,7 @@ const useTarget = () => {
         }
 
         return (
-            <targetsContext.Provider value={{ targets , addTarget, deleteTarget , downloadTarget }}>
+            <targetsContext.Provider value={{ targets , addTarget, deleteTarget , downloadTarget , getTargetImage }}>
                 {children}
             </targetsContext.Provider>
         )
@@ -141,4 +170,4 @@ const useTarget = () => {
 
 }
 
-export { useTarget , useWRS2 };
+export { useTarget , useWRS2 }

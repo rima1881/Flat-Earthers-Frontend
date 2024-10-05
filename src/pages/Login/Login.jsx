@@ -1,15 +1,23 @@
 import { useState } from "react";
 import styles from "./Login.module.css";
 import useAuth from "../../utils/useAuth";
-
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
 
   const { userState } = useAuth()
-  const { logIn , signUp } = userState()
+  const { user , logIn , signUp } = userState()
+
+  const navigate = useNavigate()
+
+  if (user.token != '')
+    navigate('/')
 
   const [ isLoggingIn , setIsLogginIn ] = useState(true)
   const [ formData , setFormData] = useState( { email : ""  , password : "" , confPwd : "" } )
+
+
+
 
   const inputHandle = (event) => {
     const { name , value} = event.target

@@ -6,7 +6,7 @@ const AuthContext = createContext()
 
 const useAuth = () => {
 
-    const AuthProvider = useCallback( ({ children }) => {
+    const AuthProvider = ({ children }) => {
 
         const [ user , setUser ] = useState( () => {
             const savedAuth = Cookies.get('auth')
@@ -15,7 +15,7 @@ const useAuth = () => {
 
         const saveUser = (data) => {
             
-            const parsedData = { email : data.user.email , token : data.token }
+            const parsedData = { email : data.email , token : data.token }
             Cookies.set('auth' , JSON.stringify(parsedData), {expires: 1/24} )
             setUser(parsedData)
 
@@ -39,7 +39,10 @@ const useAuth = () => {
             })
             .then((data) => {
           
-                saveUser(data)
+                const { token } = data
+                const { email } = user
+
+                saveUser({ email : email , token : token })
             })
             .catch((err) => console.log(err))
 
@@ -80,7 +83,7 @@ const useAuth = () => {
             </AuthContext.Provider>
         )        
 
-    }, [AuthContext])
+    }
 
     const userState = useCallback( () => useContext(AuthContext) , [AuthContext])
 

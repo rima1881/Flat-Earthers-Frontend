@@ -13,8 +13,7 @@ export default function Navbar(){
     const { userState } = useAuth()
     const { user , logout } = userState()
 
-
-    const hasLoggedIn = user.token != null
+    const hasLoggedIn = user.token != ''
 
     const loginOption = <li>
         <a href="/login">
@@ -54,7 +53,7 @@ export default function Navbar(){
                         <FontAwesomeIcon className={style.icon} icon={faCircleDown} />
                     </a>
                 </li>
-                {hasLoggedIn ? loginOption : logoutOption}
+                {!hasLoggedIn ? loginOption : logoutOption}
             </ul>
         </div>
     )
