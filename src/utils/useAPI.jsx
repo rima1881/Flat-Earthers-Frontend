@@ -7,15 +7,10 @@ const useAPI = () => {
     const { userState } = useAuth()
     const { user , logout } = userState()
 
-
     //API Calling the sync the data
-    const pushTargets = useCallback((targets ) => {
+    const pushTargets = useCallback( targets => {
 
         const token = user.token
-
-
-        console.log(targets)
-
         return false
 
     }, [user])
@@ -24,23 +19,63 @@ const useAPI = () => {
 
         const token = user.token
 
-        console.log("pulling targets from server...")
+        const param =  new URLSearchParams({
+            email: "amir@gmail.com"
+        })
+
+        const requestURL = `http://localhost:5029/gettargets?${param.toString()}`
+
+        fetch(requestURL , {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Auth-Token': token
+            }
+        })
+        .then( response => {
+            if (!response.ok)
+                throw new Error('Network response was not ok ' + response.statusText);
+                  
+            return response.json()
+        })
+        .then(data => console.log(data))
 
         return false
 
     }, [user])
 
-    const deleteTargetServer = useCallback( (target) => {
+    const deleteTargetServer = useCallback( target => {
 
         const token = user.token
+        const email = "amir@gmail.com"
 
-        console.log("target is getting deleted from server")
+        const params = new URLSearchParams({
+            email: email,
+            guid: target.guid
+        })
+
+        const requestUrl = `http://localhost:5029/deleteTarget?${params.toString()}`
+
+        fetch(requestUrl , {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Auth-Token': token
+            }
+        })
+        .then(response => {
+            if(!response.ok)
+                throw new Error('Network response was not ok ' + response.statusText);
+
+            console.log("Data was deleted")
+        })
+
 
         return false
 
     } , [user])
 
-    const getTargetDetails = useCallback( (targetId) => {
+    const getTargetDetails = useCallback( targetId => {
 
         const token = user.token
 

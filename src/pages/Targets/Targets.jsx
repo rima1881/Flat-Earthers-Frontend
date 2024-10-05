@@ -26,6 +26,7 @@ export default function Targets(){
     }
 
     const handleSync = () => {
+        console.log("I have just shitty")
         if (hasLoggedIn)
             pullTargets()
     }

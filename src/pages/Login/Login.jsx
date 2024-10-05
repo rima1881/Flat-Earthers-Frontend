@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState , useEffect } from "react";
 import styles from "./Login.module.css";
 import useAuth from "../../utils/useAuth";
 import { useNavigate } from 'react-router-dom';
@@ -10,14 +10,14 @@ export default function Login() {
 
   const navigate = useNavigate()
 
-  if (user.token != '')
-    navigate('/')
+  useEffect( () => {
+    if (user.token != '')
+      navigate('/')
+  } , [ user] )
+
 
   const [ isLoggingIn , setIsLogginIn ] = useState(true)
   const [ formData , setFormData] = useState( { email : ""  , password : "" , confPwd : "" } )
-
-
-
 
   const inputHandle = (event) => {
     const { name , value} = event.target
