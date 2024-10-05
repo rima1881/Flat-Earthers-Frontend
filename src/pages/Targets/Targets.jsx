@@ -15,14 +15,14 @@ export default function Targets(){
 
     const hasLoggedIn = user.token != ''
 
-    const deleteHandle = (targetId , index) => {
+    const deleteHandle = (uuid , index) => {
 
         //  Delete local targets
         deleteTarget(index)
 
         //  Delete server targets
-        if (hasLoggedIn)
-            deleteTargetServer(targetId)
+        if (hasLoggedIn && uuid != -1)
+            deleteTargetServer(uuid)
     }
 
     const handleSync = () => {

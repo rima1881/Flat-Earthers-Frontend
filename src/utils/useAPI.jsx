@@ -1,50 +1,50 @@
 import useAuth from "./useAuth"
 import { useCallback } from "react"
+import { useTarget } from "./useTarget"
 
 
 const useAPI = () => {
 
     const { userState } = useAuth()
     const { user , logout } = userState()
+    const { targetsState } = useTarget()
+    const { targets , updateTargets } = targetsState()
 
-    const addTargetAPI = useCallback( target => {
+    const addTargetAPI = useCallback( async (target) => {
 
         const token = user.token
         console.log(token)
 
-        fetch("http://localhost:5029/addtargets", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Auth-Token': token
-            },
-            body: JSON.stringify( {
-                email : user.email,
-                targets : [{
-                    guid : "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                    path : target.path,
-                    row : target.row,
-                    latitude: target.lat,
-                    longitude: target.lng,
-                    minCloudCover: target.minCC,
-                    maxCloudCover: target.maxCC,
-                    notificationOffset: "02:00:00"
-                }]
+        try{
+            const response = await fetch("http://localhost:5029/addtargets", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Auth-Token': token
+                },
+                body: JSON.stringify( {
+                    email : user.email,
+                    targets : [{
+                        path : target.path,
+                        row : target.row,
+                        latitude: target.lat,
+                        longitude: target.lng,
+                        minCloudCover: target.minCC,
+                        maxCloudCover: target.maxCC,
+                        notificationOffset: "01:00:00"
+                    }]
+                })
             })
-        })
-        .then( response => {
-            if (!response.ok)
-                throw new Error('Network response was not ok ' + response.statusText)   
-            
-            return response.json()
-        })
-        .then( data => 
-            console.log(data)
-        )
-        .catch( error => 
-            console.log(error)
-        )
 
+            if (!response.ok)
+                throw new Error('Network response was not ok ' + response.statusText)
+
+            return await response.json()
+
+        }catch (error) {
+            console.log(error);
+            return -1
+        }
     } , [])
     //API Calling the sync the data
     const pushTargets = useCallback( targets => {
@@ -80,20 +80,40 @@ const useAPI = () => {
                   
             return response.json()
         })
-        .then(data => console.log(data))
+        .then(data => {
 
-        return false
+            const parsedData = data.map( t => ({ 
+                guid : t.guid,
+                lat : t.latitude,
+                lng : t.longitude,
+                row : t.row,
+                path : t.path,
+                ccmax : t.maxCloudCover,
+                ccmin : t.minCloudCover 
+            }))
+
+            const newTargets = [...targets]
+
+
+            parsedData.forEach( t2 => {
+                if (!targets.some( t1 => t1.guid == t2.guid ))
+                    newTargets.push(t2)
+            })
+
+            updateTargets(newTargets)
+
+
+        })
 
     }, [user])
 
-    const deleteTargetServer = useCallback( target => {
+    const deleteTargetServer = useCallback( guid => {
 
         const token = user.token
-        const email = "amir@gmail.com"
 
         const params = new URLSearchParams({
             email: user.email,
-            guid: target.guid
+            guid: guid
         })
 
         const requestUrl = `http://localhost:5029/deleteTarget?${params.toString()}`
