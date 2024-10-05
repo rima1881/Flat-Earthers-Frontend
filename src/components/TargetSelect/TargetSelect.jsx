@@ -3,6 +3,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 import { useTarget } from "../../utils/useTarget";
 import { Marker } from "@react-google-maps/api";
+import useAuth from "../../utils/useAuth"
+import useAPI from "../../utils/useAPI";
+
 
 export default function TargetSelect({options, clearOptions,coordinates, setActive}){
 
@@ -16,13 +19,26 @@ export default function TargetSelect({options, clearOptions,coordinates, setActi
     const { targetsState } = useTarget()
     const { addTarget } = targetsState()
 
+    const { userState } = useAuth()
+    const { user } = userState()
+
+    const { addTargetAPI } = useAPI()
+
+    const hasLoggedIn = user.token != ''
+
     const submitHandle = () => {
 
         const { path , row } = options[options.activeIndex]
         const lat = coordinates.lat
         const lng = coordinates.lng
 
-        const newTarget = { row : row , path : path ,lat : lat, lng : lng, num: 5 }
+        const newTarget = { row : row , path : path ,lat : lat, lng : lng , minCC : 0 , maxCC : 0 }
+
+        if (hasLoggedIn){
+
+            addTargetAPI( newTarget )
+
+        }
 
         addTarget(newTarget)
 

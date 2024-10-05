@@ -89,11 +89,11 @@ const useTarget = () => {
 
         const deleteTarget = (index) => {
             
-            const newTargets = targets.splice(index, 1)
-            console.log(newTargets)
-            Cookies.set('targets', JSON.stringify(newTargets), { expires: 7 }) // Store in cookies with 7-day expiration
+            const updatedTargets = [...targets]
+            updatedTargets.splice(index, 1)
+            Cookies.set('targets', JSON.stringify(updatedTargets), { expires: 7 }) // Store in cookies with 7-day expiration
 
-            setTargets(newTargets)
+            setTargets(updatedTargets)
 
         }
 
@@ -112,7 +112,7 @@ const useTarget = () => {
                 if (!response.ok)
                     throw new Error('Network response was not ok');
                 
-                return response.json();
+                return response.json()
             })
         }
 
