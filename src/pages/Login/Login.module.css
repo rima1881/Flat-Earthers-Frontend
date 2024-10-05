@@ -1,74 +1,137 @@
-
-.container{
+.container {
     display: flex;
     width: 100%;
     height: 100vh;
-    background: url("/login_background.jpeg");
-                    /* Adjust the angle as needed */
-    background-size: 100%;
+    justify-content: center; /* Centers the form horizontally */
+    align-items: center;     /* Centers the form vertically */
+    background: url("/login_background.jpeg") no-repeat center center fixed;
+    background-size: cover;
 }
 
-
-.loginForm{
+.loginForm {
     display: flex;
     flex-direction: column;
-    margin: auto;
-    margin-top: 25vh;
-    width: 30%;
-    background-color: #F5f5f5;
-    border-radius: 15px;
-    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);  
-        /* Adjust this value to move the placeholder */
+    align-items: center;
+    padding: 40px; /* Added padding for more spacing */
+    width: 400px; /* Adjusted form width */
+    background-color: #ffffff; /* White background for contrast */
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);  
     transition: 0.3s ease-in-out;
 }
 
-.inputEmail{
-    height: 40px;
-    width : 70%;
-    border-radius: 10px;
-    border-style: solid;
-    border-width: 1px;
-    border-color: #000;
-    padding-left: 10px;
-    margin-left: auto;
-    margin-right: auto;
+.inputEmail, .inputPass {
+    height: 45px;
+    width: 100%; /* Full width */
+    border-radius: 5px; /* Softer border */
+    border: 1px solid #ccc; /* Lighter border */
+    padding-left: 15px;
+    margin-bottom: 20px;
+    font-size: 16px; /* Increased text size for better readability */
+}
+
+.inputEmail:focus, .inputPass:focus {
+    outline: none;
+    border-color: #007bff; /* Focus effect */
+}
+
+.button {
+    height: 50px;
+    width: 100%;
+    border-radius: 5px;
+    background-color: #28a745; /* Bright green for primary action */
+    transition: 0.5s ease-in-out;
+    margin-top: 20px;
+    border: none;
+    color: white;
+    font-size: 18px; /* Larger button text */
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+}
+
+.button:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+
+.logo {
+    margin-bottom: 30px;
+    width: 100px; /* Adjusted size for better proportions */
+    height: 100px;
+    border-radius: 50%;
+    background-image: url('/logo.webp');
+    background-size: cover;
+}
+
+/* Toggle Switch */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 150px; /* Width adjusted for "Sign Up" text */
+    height: 40px; /* Height of the switch */
     margin-bottom: 20px;
 }
 
-.button{
-    height: 40px;
-    width: 70%;
-    border-radius: 10px;
-    background-color: rgb(50, 168, 82);
-    transition: 0.5s ease-in-out;
-    margin-bottom: 30px;
-    margin-left: auto;
-    border : 0;
-    margin-right: auto;
+/* Hide the default HTML checkbox */
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* The slider (round circle) */
+.slider {
+    position: absolute;
     cursor: pointer;
-    font-family: "Roboto", sans-serif;
-    font-weight: 400;
-    font-style: normal;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #6C63FF;
+    transition: 0.4s;
+    border-radius: 34px;
+    display: flex; /* Flexbox for centering text */
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 0 20px; /* Padding for text alignment */
 }
 
-
-.logo{
-    margin-top: 30px;
-    width: 80px;
-    height: 80px;
-    margin-bottom: 30px;
-    border-radius: 40px;
-    background-image: url('/logo.webp');
-    background-size: cover;
-    margin-left: auto;
-    margin-right: auto;
+/* The circle inside the slider */
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 30px;
+    width: 30px;
+    left: 5px;
+    bottom: 5px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%; /* Circle shape */
 }
 
-.loginForm:hover{
-    margin-top: calc(25vh - 5px);
+/* When the checkbox is checked */
+input:checked + .slider {
+    background-color: #2196F3; /* Change background color */
+    justify-content: flex-start; /* Align text to the left when in Sign Up state */
 }
 
+/* Move the circle to the right when checked */
+input:checked + .slider:before {
+    transform: translateX(110px); /* Move the circle further right to the edge */
+}
 
-.button:hover{
-    background-color: #00b4d8;
+/* Ensure "Login" remains centered */
+.slider span {
+    width: 100%;
+    text-align: center;
+}
+
+/* Specific adjustments when the checkbox is checked (Sign Up state) */
+input:checked + .slider span {
+    text-align: left; /* Align text to the left when "Sign Up" */
+    padding-left: 10px; /* Add a little padding on the left */
 }

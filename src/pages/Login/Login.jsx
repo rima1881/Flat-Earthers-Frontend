@@ -1,69 +1,104 @@
-import { useState , useEffect } from "react";
+import { useState, useEffect } from "react";
 import styles from "./Login.module.css";
 import useAuth from "../../utils/useAuth";
 import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
 
-  const { userState } = useAuth()
-  const { user , logIn , signUp } = userState()
+  const { userState } = useAuth();
+  const { user, logIn, signUp } = userState();
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  useEffect( () => {
-    if (user.token != '')
-      navigate('/')
-  } , [ user] )
+  useEffect(() => {
+    if (user.token !== '') {
+      navigate('/');
+    }
+  }, [user, navigate]);
 
+  const [isLoggingIn, setIsLoggingIn] = useState(true); // Tracks login/signup state
+  const [formData, setFormData] = useState({ email: "", password: "", confPwd: "" });
 
-  const [ isLoggingIn , setIsLogginIn ] = useState(true)
-  const [ formData , setFormData] = useState( { email : ""  , password : "" , confPwd : "" } )
-
+  // Handles input changes for email, password, and confirmation password
   const inputHandle = (event) => {
-    const { name , value} = event.target
-      setFormData(prevState => {
-            return {
-                ...prevState,
-                [name] : value
-            }
-        })
-
-  }
-
-  const submitHandler = (e) => {
-    e.preventDefault()
-
-    if(isLoggingIn)
-      logIn(formData)
-    else
-      signUp(formData)
-
+    const { name, value } = event.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value
+    }));
   };
 
-  const LoginTemplate = <>
-    <input name="email" type="text" placeholder="Notification Email" className={styles.inputEmail} value={formData.email} onChange={inputHandle} />
-    <input name="password" type="password" placeholder="password" className={styles.innputPass} value={formData.password} onChange={inputHandle} />
-  </>
+  // Handles form submission
+  const submitHandler = (e) => {
+    e.preventDefault();
 
-  const SignUpTemplate = <>
-    <input name="email" type="text" placeholder="Notification Email" className={styles.inputEmail} value={formData.email} onChange={inputHandle} />
-    <input name="password" type="password" placeholder="password" className={styles.innputPass} value={formData.password} onChange={inputHandle} />
-    <input name="confPwd" type="password" placeholder="password" className={styles.innputPass} value={formData.confPwd} onChange={inputHandle} />
-  </>
+    if (isLoggingIn) {
+      logIn(formData); // Log in
+    } else {
+      if (formData.password !== formData.confPwd) {
+        alert("Passwords do not match!");
+        return;
+      }
+      signUp(formData); // Sign up
+    }
+  };
 
-  const swithHandle = () => {
-    setIsLogginIn(prev => !prev)
-  }
+  // Toggle between login and sign-up states
+  const toggleSwitch = () => {
+    setIsLoggingIn((prev) => !prev); // Switch between Login and Sign Up
+  };
 
-  return <div className={styles.container}>
+  return (
+    <div className={styles.container}>
+      <div className={styles.loginForm}>
+
+        {/* Toggle Switch */}
+        <label className={styles.switch}>
+  <input type="checkbox" checked={!isLoggingIn} onChange={toggleSwitch} />
+  <span className={styles.slider}>
+    {isLoggingIn ? <span>Login</span> : <span>Sign Up</span>}
+  </span>
+</label>
 
 
-    <div className={styles.loginForm}>
-      <button onClick={swithHandle}> Login | SignUp </button>
-      <div className={styles.logo}></div>
-      {isLoggingIn ? LoginTemplate : SignUpTemplate}
-      <button className={styles.button} onClick={submitHandler}>{isLoggingIn ? "Login" : "SignUp"}</button>
+
+
+        {/* Conditionally render login or sign-up form */}
+        <form onSubmit={submitHandler}>
+          <input
+            name="email"
+            type="text"
+            placeholder="Notification Email"
+            className={styles.inputEmail}
+            value={formData.email}
+            onChange={inputHandle}
+          />
+          <input
+            name="password"
+            type="password"
+            placeholder="Password"
+            className={styles.inputEmail}
+            value={formData.password}
+            onChange={inputHandle}
+          />
+
+          {/* Render confirm password field only if signing up */}
+          {!isLoggingIn && (
+            <input
+              name="confPwd"
+              type="password"
+              placeholder="Confirm Password"
+              className={styles.inputEmail}
+              value={formData.confPwd}
+              onChange={inputHandle}
+            />
+          )}
+
+          <button className={styles.button} type="submit">
+            {isLoggingIn ? "Login" : "Sign Up"}
+          </button>
+        </form>
+      </div>
     </div>
-
-  </div>;
+  );
 }
