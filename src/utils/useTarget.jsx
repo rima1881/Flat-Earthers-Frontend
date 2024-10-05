@@ -1,7 +1,7 @@
 import * as turf from "@turf/turf";
 import { useState , useEffect , createContext, useContext, useCallback } from "react";
 import Cookies from "js-cookie";
-import Papa from "papaparse"
+//import Papa from "papaparse"
 
 const useWRS2 = () => {
 
@@ -167,7 +167,7 @@ const useTarget = () => {
             document.body.removeChild(link)
 
         }
-        const uploadTarget = (file) => {
+        /*const uploadTarget = (file) => {
             if (!file) {
                 alert('No file selected.');
                 return;
@@ -193,10 +193,10 @@ const useTarget = () => {
                     console.error('Error parsing the file:', error);
                 }
             });
-        };
+        };*/
 
         return (
-            <targetsContext.Provider value={{ targets , addTarget, deleteTarget , downloadTarget , getTargetImage , updateTargets , deleteLocal, uploadTarget }}>
+            <targetsContext.Provider value={{ targets , addTarget, deleteTarget , downloadTarget , getTargetImage , updateTargets , deleteLocal }}>
                 {children}
             </targetsContext.Provider>
         )

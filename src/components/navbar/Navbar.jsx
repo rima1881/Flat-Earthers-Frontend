@@ -8,7 +8,7 @@ import {useRef} from 'react'
 export default function Navbar(){
 
     const { targetsState } = useTarget()
-    const { downloadTarget, uploadTarget } = targetsState()
+    const { downloadTarget } = targetsState()
 
     const { userState } = useAuth()
     const { user , logout } = userState()
@@ -16,16 +16,13 @@ export default function Navbar(){
     const hasLoggedIn = user.token != ''
     const fileInputRef = useRef(null)
     const handleUpload = (event) => {
-    const file = event.target.files[0];
+        const file = event.target.files[0];
     
-    if (!file) {
-        alert('Please choose a file');
-        console.log('No file selected.');
+        if (!file) {
+            alert('Please choose a file');
+            console.log('No file selected.');
         } 
-    else {
-        
-        uploadTarget(file);
-    }
+        else {    }
     };
 
     const triggerFileInput = () => {
