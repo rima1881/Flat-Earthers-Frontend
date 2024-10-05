@@ -130,10 +130,13 @@ export default function GoogleMaps() {
 
   } , [availableTargets] )
 
-  
-  const handleBtn = () => {
-    setShowMarkerts(prev => !prev)
-  }
+    // Handle toggle button to show/hide markers
+    const [showTargets, setShowTargets] = useState(false);
+
+    const handleToggle = (isChecked) => {
+      setShowTargets(isChecked);
+      setShowMarkerts(isChecked); // Show/hide markers when toggled
+    };
 
   const renderedTargets = targets.map((target, index) => (
     <Marker
@@ -164,7 +167,17 @@ export default function GoogleMaps() {
 
   return isLoaded ? (
     <div className={style.page}>
-      <button onClick={handleBtn}>Don't click me</button>
+      <label className={style.switch}>
+        <input
+          type="checkbox"
+          onChange={(e) => handleToggle(e.target.checked)}
+ // toggle state on change
+        />
+        <span className={style.slider}>
+        {showTargets ? "Hide Targets" : "Show Targets"}
+        </span>
+      </label>
+
       <SearchBox onSearch={onSearch} inputClass={style.search} />
       <GoogleMap
         mapContainerStyle={containerStyle}
@@ -174,16 +187,18 @@ export default function GoogleMaps() {
         options={mapOptions}
         onLoad={onLoadMap}
       >
-         { showMarkers && renderedTargets}
+        {showTargets && renderedTargets}
         {marker && <Marker position={{ lat: marker.lat, lng: marker.lng }} />}
-        
-       
       </GoogleMap>
 
-      <TargetSelect options={availableTargets} setActive={activeHandle} coordinates={marker ? { lat: marker.lat, lng: marker.lng } : { lat: 0, lng: 0 }} clearOptions={clearAvailableTargets} />
+      <TargetSelect
+        options={availableTargets}
+        setActive={activeHandle}
+        coordinates={marker ? { lat: marker.lat, lng: marker.lng } : { lat: 0, lng: 0 }}
+        clearOptions={clearAvailableTargets}
+      />
     </div>
-      
   ) : (
     <div>Loading map...</div>
-  )
+  );
 }
