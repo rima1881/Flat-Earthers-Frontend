@@ -8,12 +8,11 @@ const useAPI = () => {
     const { userState } = useAuth()
     const { user , logout } = userState()
     const { targetsState } = useTarget()
-    const { targets , updateTargets } = targetsState()
+    const { targets , updateTargets , deleteLocal } = targetsState()
 
     const addTargetAPI = useCallback( async (target) => {
 
         const token = user.token
-        console.log(token)
 
         try{
             const response = await fetch("http://localhost:5029/addtargets", {
@@ -39,7 +38,9 @@ const useAPI = () => {
             if (!response.ok)
                 throw new Error('Network response was not ok ' + response.statusText)
 
-            return await response.json()
+            const guid = await response.json()
+            console.log(guid)
+            return guid[0]
 
         }catch (error) {
             console.log(error);
@@ -47,12 +48,56 @@ const useAPI = () => {
         }
     } , [])
     //API Calling the sync the data
-    const pushTargets = useCallback( targets => {
+    const pushTargets = useCallback( async () => {
 
         const token = user.token
-        return false
+
+        console.log(targets)
+
+        const localTarget = targets.filter( t => t.guid == -1 ).map( t => ({ 
+            path : t.path,
+            row : t.row,
+            latitude: t.lat,
+            longitude: t.lng,
+            minCloudCover: t.minCC,
+            maxCloudCover: t.maxCC,
+            notificationOffset: "01:00:00"
+        }))
+        
+        const response = await fetch("http://localhost:5029/addtargets", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Auth-Token': token
+            },
+            body: JSON.stringify( {
+                email : user.email,
+                targets : localTarget
+            })
+        })
+
+        if (!response.ok)
+            throw new Error('Network response was not ok ' + response.statusText)
 
         
+        const pars = await response.json()
+
+        deleteLocal()
+
+        const updatedT = localTarget.map( (t,index) => ({
+            guid : pars[index],
+            lat : t.latitude,
+            lng : t.longitude,
+            row : t.row,
+            path : t.path,
+            ccmax : t.maxCloudCover,
+            ccmin : t.minCloudCover 
+            
+        }))
+
+        console.log(updatedT)
+
+        updateTargets(updatedT)
 
 
     }, [user])

@@ -70,7 +70,6 @@ export default function Targets(){
             <div className={styles.header}>
                 <span>Selected Targets</span>
                 <button disabled={!hasLoggedIn} onClick={handlePush}>Upload</button>
-                <button disabled={!hasLoggedIn} onClick={handleSync}>Sync</button>
             </div>
             <div className={styles.body}>
                 <table>

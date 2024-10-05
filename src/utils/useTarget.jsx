@@ -103,6 +103,13 @@ const useTarget = () => {
 
         }
 
+        const deleteLocal = () => {
+
+            const upT = [...targets].filter(t => t.guid != "-1")
+            updateTargets( upT )
+
+        }
+
         const getTargetImage = ( path , row , num ) => {
 
             const params = new URLSearchParams({
@@ -162,7 +169,7 @@ const useTarget = () => {
         }
 
         return (
-            <targetsContext.Provider value={{ targets , addTarget, deleteTarget , downloadTarget , getTargetImage , updateTargets }}>
+            <targetsContext.Provider value={{ targets , addTarget, deleteTarget , downloadTarget , getTargetImage , updateTargets , deleteLocal }}>
                 {children}
             </targetsContext.Provider>
         )

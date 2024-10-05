@@ -26,7 +26,7 @@ export default function TargetSelect({options, clearOptions,coordinates, setActi
 
     const hasLoggedIn = user.token != ''
 
-    const submitHandle = () => {
+    const submitHandle = async () => {
 
         const { path , row } = options[options.activeIndex]
         const lat = coordinates.lat
@@ -35,9 +35,7 @@ export default function TargetSelect({options, clearOptions,coordinates, setActi
         const newTarget = { guid : -1 , row : row , path : path ,lat : lat, lng : lng , minCC : 0 , maxCC : 0 }
 
         if (hasLoggedIn){
-
-           newTarget.guid = addTargetAPI( newTarget )
-
+            newTarget.guid = await addTargetAPI( newTarget )
         }
 
         addTarget(newTarget)
