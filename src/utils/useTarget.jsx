@@ -86,13 +86,19 @@ const useTarget = () => {
                 console.log(error)
             })
         }
+        
+        const updateTargets = ( ts ) => {
+
+            Cookies.set('targets', JSON.stringify(ts), { expires: 7 }) // Store in cookies with 7-day expiration
+            setTargets(ts)
+
+        }
 
         const deleteTarget = (index) => {
             
             const updatedTargets = [...targets]
             updatedTargets.splice(index, 1)
             Cookies.set('targets', JSON.stringify(updatedTargets), { expires: 7 }) // Store in cookies with 7-day expiration
-
             setTargets(updatedTargets)
 
         }
@@ -156,7 +162,7 @@ const useTarget = () => {
         }
 
         return (
-            <targetsContext.Provider value={{ targets , addTarget, deleteTarget , downloadTarget , getTargetImage }}>
+            <targetsContext.Provider value={{ targets , addTarget, deleteTarget , downloadTarget , getTargetImage , updateTargets }}>
                 {children}
             </targetsContext.Provider>
         )
