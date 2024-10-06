@@ -44,7 +44,7 @@ export default function Navbar(){
     return (
         <div className={style.container}>
             <ul className={style.list}>
-                <a href="/about">
+                <a href="/about" className={style.pointToLIKN}>
                     <li className={style.logo}>
 
                     </li>

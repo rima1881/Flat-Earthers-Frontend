@@ -52,3 +52,7 @@
   background: url("/logo.webp");
   background-size: contain;
 }
+
+.joyalIsGay{
+  cursor: pointer;
+}
