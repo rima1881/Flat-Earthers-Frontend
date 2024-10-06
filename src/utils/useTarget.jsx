@@ -103,10 +103,10 @@ const useTarget = () => {
 
         }
 
-        const deleteLocal = () => {
+        const deleteAll = () => {
 
-            const upT = [...targets].filter(t => t.guid != "-1")
-            updateTargets( upT )
+            Cookies.remove('targets')
+            setTargets( [] )
 
         }
 
@@ -196,7 +196,7 @@ const useTarget = () => {
         };*/
 
         return (
-            <targetsContext.Provider value={{ targets , addTarget, deleteTarget , downloadTarget , getTargetImage , updateTargets , deleteLocal }}>
+            <targetsContext.Provider value={{ targets , addTarget, deleteTarget , downloadTarget , getTargetImage , updateTargets , deleteAll }}>
                 {children}
             </targetsContext.Provider>
         )

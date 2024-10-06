@@ -13,11 +13,14 @@ const useAuth = () => {
             return savedAuth ? JSON.parse(savedAuth) : { email : '' , token : '' }
         })
 
-        const saveUser = (data) => {
+        const saveUser = async (data) => {
             
+
             const parsedData = { email : data.email , token : data.token }
             Cookies.set('auth' , JSON.stringify(parsedData), {expires: 1/24} )
             setUser(parsedData)
+
+            await syncUserTarget()
 
         }
 

@@ -3,7 +3,8 @@ import { faCircleUp , faMap , faCircleDot , faCircleDown , faSignIn , faSignOut 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useTarget } from "../../utils/useTarget"
 import useAuth from "../../utils/useAuth"
-import {useRef} from 'react'
+import {useRef , useEffect} from 'react'
+import useAPI from "../../utils/useAPI"
 
 export default function Navbar(){
 
@@ -13,7 +14,19 @@ export default function Navbar(){
     const { userState } = useAuth()
     const { user , logout } = userState()
 
+    const { syncUserTarget } = useAPI()
+
     const hasLoggedIn = user.token != ''
+
+    useEffect(() => {
+
+        if(!hasLoggedIn)
+            return
+
+        syncUserTarget()
+
+    } , [user])
+
     const fileInputRef = useRef(null)
     const handleUpload = (event) => {
         const file = event.target.files[0];
