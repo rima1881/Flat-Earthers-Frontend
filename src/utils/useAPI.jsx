@@ -88,6 +88,8 @@ const useAPI = () => {
 
         try{
 
+            console.log(targets)
+
             const localTarget = targets.filter(t => t.guid == -1).map( t => ({ 
                 path : t.path,
                 row : t.row,

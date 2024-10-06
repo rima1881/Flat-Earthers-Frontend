@@ -11,7 +11,7 @@ const useTargetDetails = (guid) => {
 
     const [targetData , setTargetData] = useState(targets.find( t => t.guid === guid ))
 
-    const [imageNum , setImageNum] = useState(5)
+    const [formData , setFormData] = useState({ numResults : 5 , offSet : '01:00:00' })
 
     useEffect(() => {
 
@@ -20,7 +20,7 @@ const useTargetDetails = (guid) => {
         const params = new URLSearchParams({
             path: targetData.path,
             row: targetData.row,
-            numResults: imageNum
+            numResults: formData.numResults
         });
 
         const requestURL = `http://localhost:5029/Images?${params.toString()}`;
@@ -35,7 +35,7 @@ const useTargetDetails = (guid) => {
 
     }, [guid, targets]);  // Include `targets` in the dependency array if it's coming from the component
 
-    return { targetData , images , imageNum }
+    return { targetData , images , formData , setFormData }
 }
 
 export default useTargetDetails
