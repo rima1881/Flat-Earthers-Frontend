@@ -14,6 +14,7 @@ export default function Targets(){
     const { user } = userState()
 
     const hasLoggedIn = user.token != ''
+    console.log(targets)
 
     const deleteHandle = (uuid , index) => {
 
@@ -44,13 +45,13 @@ export default function Targets(){
             </td>
             <td>
                 <a href={"examine/"+ guid} >Examine</a>
-                <button onClick={() => deleteHandle(id, index)}>Delete</button>
+                <button onClick={() => deleteHandle(guid, index)}>Delete</button>
             </td>
         </tr>
     )
     
     const renderedTargets = targets.map( (target, index) => 
-        <TargetTemplate row={target.row} path={target.path} lat={target.lat} lng={target.lng} key={index} index={index} /> 
+        <TargetTemplate guid={target.guid} row={target.row} path={target.path} lat={target.lat} lng={target.lng} key={index} index={index} /> 
     
     )
 

@@ -97,7 +97,7 @@ const useAPI = () => {
         })
 
         try{
-            const localTarget = targets.map( t => ({ 
+            const localTarget = targets.filter(t => t.guid == -1).map( t => ({ 
                 path : t.path,
                 row : t.row,
                 latitude: t.lat,
