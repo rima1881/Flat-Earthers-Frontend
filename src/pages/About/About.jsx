@@ -88,25 +88,84 @@ export default function About() {
 
       {/* Hero Section */}
       <section className={styles.heroSection}>
-     <div className={styles.heroContent}>
-        <h1>About Us</h1>
-          <p>
-      We are a passionate team of computer engineering students from Alexandria University, driven by innovation and a shared fascination for space exploration. 
-      Our team came together to create Lunar Trek as part of NASA's International Space Apps Challenge, blending our technical skills with our love for the cosmos.
-          </p>
-          <p>
-      Our goal is to inspire others to reach for the stars and to contribute our expertise in creating solutions for a brighter, more connected future.
-          </p>
-      </div>
+        <div className={styles.heroContent}>
+          <h1>About Us</h1>
+          <p>We are a group of passionate computer engineering and computer science students from Concordia University.</p>
+          <p>We developed the Flat Earthers App to participate in NASA's International Space Apps Challenge.</p>
+          <p>Our goal is to contribute our skills and knowledge while inspiring others' passion for satellite exploration.</p>
+        </div>
       </section>
 
       {/* Team Section */}
       <section className={styles.teamSection}>
-        <h2>Our Team</h2>
+        <h2>Meet the Team</h2>
         <div className={styles.teamContainer}>
-          <div className={styles.teamMember}>John Doe</div>
-          <div className={styles.teamMember}>Jane Doe</div>
-          <div className={styles.teamMember}>Another Member</div>
+          <div className={styles.teamMember}>
+            <h3>Amir Gharibipour</h3>
+            <p>Project Manager + Frontend Developer</p>
+            <p>John is an expert in machine learning and computer vision.</p>
+            <div className={styles.socialLinks}>
+              <a href="https://github.com/rima1881" target="_blank" rel="noopener noreferrer">
+                <img src="/icons/github.svg" alt="GitHub" />
+              </a>
+              <a href="https://www.linkedin.com/in/amirgharibipour/" target="_blank" rel="noopener noreferrer">
+                <img src="/icons/linkedin.svg" alt="LinkedIn" />
+              </a>
+            </div>
+          </div>
+          <div className={styles.teamMember}>
+            <h3>Bryan Carlo Miguel</h3>
+            <p>Backend Developer</p>
+            <p>Jane brings a keen eye for design and user experiences.</p>
+            <div className={styles.socialLinks}>
+              <a href="https://github.com/bryjen" target="_blank" rel="noopener noreferrer">
+                <img src="/icons/github.svg" alt="GitHub" />
+              </a>
+              <a href="https://www.linkedin.com/in/bryancarlomiguel/" target="_blank" rel="noopener noreferrer">
+                <img src="/icons/linkedin.svg" alt="LinkedIn" />
+              </a>
+            </div>
+          </div>
+          <div className={styles.teamMember}>
+            <h3>Mohammed Umaruddin</h3>
+            <p>Frontend Developer</p>
+            <p>Mike specializes in server-side programming and database management.</p>
+            <div className={styles.socialLinks}>
+              <a href="https://github.com/genericlearner" target="_blank" rel="noopener noreferrer">
+                <img src="/icons/github.svg" alt="GitHub" />
+              </a>
+              <a href="https://www.linkedin.com/in/mohammedumaruddin/" target="_blank" rel="noopener noreferrer">
+                <img src="/public/icons/linkedin.svg" alt="LinkedIn" />
+              </a>
+            </div>
+          </div>
+          {/* Second row of team members */}
+          <div className={styles.teamMember}>
+            <h3>Joyal Biju Kulangara</h3>
+            <p>UI/UX Designer</p>
+            <p>Emily ensures smooth and dynamic user interfaces for our projects.</p>
+            <div className={styles.socialLinks}>
+              <a href="https://github.com/Joyal99" target="_blank" rel="noopener noreferrer">
+                <img src="/icons/github.svg" alt="GitHub" />
+              </a>
+              <a href="https://www.linkedin.com/in/jbk79/" target="_blank" rel="noopener noreferrer">
+                <img src="/icons/linkedin.svg" alt="LinkedIn" />
+              </a>
+            </div>
+          </div>
+          <div className={styles.teamMember}>
+            <h3>Elaheh Zehtab</h3>
+            <p>DevOps</p>
+            <p>David coordinates the team's work and manages our timelines.</p>
+            <div className={styles.socialLinks}>
+              <a href="https://github.com/ELLIE-ZHB" target="_blank" rel="noopener noreferrer">
+                <img src="/icons/github.svg" alt="GitHub" />
+              </a>
+              <a href="https://www.linkedin.com/in/elahehzehtab/" target="_blank" rel="noopener noreferrer">
+                <img src="/icons/linkedin.svg" alt="LinkedIn" />
+              </a>
+            </div>
+          </div>
         </div>
       </section>
 
