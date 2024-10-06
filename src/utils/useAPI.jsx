@@ -119,6 +119,7 @@ const useAPI = () => {
         })
 
         try{
+
             const localTarget = targets.filter(t => t.guid == -1).map( t => ({ 
                 path : t.path,
                 row : t.row,
@@ -128,37 +129,46 @@ const useAPI = () => {
                 maxCloudCover: t.maxCC,
                 notificationOffset: "01:00:00"
             }))
-    
-            const response1 = await fetch("http://localhost:5029/addtargets", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Auth-Token': token
-                },
-                body: JSON.stringify( {
-                    email : user.email,
-                    targets : localTarget
+
+            let addedTargets
+
+            if ( localTarget.length != 0 ){
+                
+                const response1 = await fetch("http://localhost:5029/addtargets", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Auth-Token': token
+                    },
+                    body: JSON.stringify( {
+                        email : user.email,
+                        targets : localTarget
+                    })
                 })
-            })
+    
+                if (!response1.ok)
+                    throw new Error('Network response was not ok ' + response1.statusText)
+    
+    
+                const ids = await response1.json()
+    
+                addedTargets = localTarget.map( (t, index) => ({
+                    guid : ids[index],
+                    path : t.path,
+                    row : t.row,
+                    lat: t.latitude,
+                    lng: t.longitude,
+                    minCloudCover: t.minCC,
+                    maxCloudCover: t.maxCC,
+                    notificationOffset: "01:00:00"
+                }))
+    
+                deleteAll()
 
-            if (!response1.ok)
-                throw new Error('Network response was not ok ' + response1.statusText)
+            }
 
 
-            const ids = await response1.json()
-
-            const addedTargets = localTarget.map( (t, index) => ({
-                guid : ids[index],
-                path : t.path,
-                row : t.row,
-                lat: t.latitude,
-                lng: t.longitude,
-                minCloudCover: t.minCC,
-                maxCloudCover: t.maxCC,
-                notificationOffset: "01:00:00"
-            }))
-
-            deleteAll()
+            
 
             const requestURL = `http://localhost:5029/gettargets?${param.toString()}`
 
@@ -185,7 +195,14 @@ const useAPI = () => {
                 ccmin : t.minCloudCover 
             }))
 
-            const newTargets = [...addedTargets, ...parsedData]
+            let newTargets;
+
+            if(addedTargets){
+                newTargets = [...addedTargets, ...parsedData]
+            }
+            else{
+                newTargets = [...parsedData]
+            }
 
             updateTargets(newTargets)
         }
