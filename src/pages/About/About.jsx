@@ -90,7 +90,7 @@ export default function About() {
       <section className={styles.heroSection}>
         <div className={styles.heroContent}>
           <h1>About Us</h1>
-          <p>We are a group of passionate computer engineering and computer science students from Concordia University.</p>
+          <p>We are a group of passionate computer engineering and computer science students from Concordia University, Montreal, Canada.</p>
           <p>We developed the Flat Earthers App to participate in NASA's International Space Apps Challenge.</p>
           <p>Our goal is to contribute our skills and knowledge while inspiring others' passion for satellite exploration.</p>
         </div>
