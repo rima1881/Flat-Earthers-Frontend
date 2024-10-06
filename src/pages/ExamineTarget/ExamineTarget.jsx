@@ -20,6 +20,7 @@ export default function ExamineTarget(){
     const { grid , updateGrid } = usePixels()
     
     
+    console.log( images )
 
     const handleChange = (event) => {
         const { name, value } = event.target
@@ -27,7 +28,7 @@ export default function ExamineTarget(){
         setFormData((prevState) => ({
             ...prevState,
             [name]: value
-          }));
+        }))
 
     }
 
@@ -46,9 +47,30 @@ export default function ExamineTarget(){
     }
 
     const handleSubmit = () => {
-        updateGrid()
+        updateGrid( targetData , images[activeImage].entityId , 15 )
     }
 
+    let gridTemplate = <>
+    </>
+
+    console.log("mammad")
+    console.log(grid.length)
+
+    if( grid.length != 0 ) {
+        gridTemplate =  <div className={styles.grid}>
+            <img src={grid[0]} />
+            <img src={grid[3]} />
+            <img src={grid[6]} />
+
+            <img src={grid[1]} />
+            <img src={grid[4]} />
+            <img src={grid[7]} />
+
+            <img src={grid[2]} />
+            <img src={grid[5]} />
+            <img src={grid[8]} />
+        </div>
+    }
 
     if(images) {
 
@@ -58,15 +80,12 @@ export default function ExamineTarget(){
                 <div className={styles.image}>
                     <img src={images[activeImage].browse} />
                     <div>
-                        
                         <FontAwesomeIcon icon={faCaretLeft} onClick={handleBack} className={disableBack ? styles.backDis : styles.backEN} />
                         <FontAwesomeIcon icon={faCaretRight} onClick={handleForward} className={disableForward ? styles.forwardDis : styles.forwardEN} />
-                        </div>
-
                     </div>
-                <div className={styles.grid}>
-                    <img src={images[1].browse} />
                 </div>
+                
+                {gridTemplate}
 
             </div>
             <div className={styles.btmSec}>

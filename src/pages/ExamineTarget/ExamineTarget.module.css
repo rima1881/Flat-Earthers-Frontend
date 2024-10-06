@@ -22,7 +22,7 @@
 }
 
 /* Image and grid section */
-.image, .grid {
+.image{
     width: 40%; /* Increase the width to make them bigger */
     height: auto;
     background-color: #ffffff;
@@ -32,7 +32,25 @@
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
 }
 
-.image img, .grid img {
+.grid {
+    width: calc(40% + 4px); /* Increase the width to make them bigger */
+    height: auto;
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 10px;
+    transition: 0.3s ease;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-wrap: wrap;
+}
+.grid img{
+    width: 33%;
+    height: 33%;
+    background-size: contain;
+    margin: 1px;
+}
+
+.image img {
     width: 100%;
     height: auto;
     object-fit: cover;
