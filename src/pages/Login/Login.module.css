@@ -27,7 +27,7 @@
     background-color: #ffffff; /* White background for contrast */
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);  
-    transition: 0.3s ease-in-out;
+    transition: opacity 0.5s ease-in-out;  /* Smooth transition */
     z-index: 1; /* Ensure the form is on top of the Earth */
 }
 
