@@ -180,6 +180,20 @@ export default function About() {
           <button type="submit">Send Message</button>
         </form>
       </section>
+
+          {/* Footer Section */}
+    <footer className={styles.footer}>
+      <div className={styles.footerContent}>
+        <a href="https://github.com/your-repo-link" target="_blank" rel="noopener noreferrer">
+          View our GitHub Repository
+        </a>
+        <div className={styles.copyright}>
+          <img src="/logo.webp" alt="Flat Earthers Logo" className={styles.footerLogo} />
+          <span>© 2024 Flat Earthers</span>
+        </div>
+      </div>
+    </footer>
     </div>
+
   );
 }
