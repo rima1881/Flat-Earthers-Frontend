@@ -129,9 +129,7 @@ const useAPI = () => {
                 maxCloudCover: t.maxCC,
                 notificationOffset: "01:00:00"
             }))
-
             let addedTargets
-
             if ( localTarget.length != 0 ){
                 
                 const response1 = await fetch("http://localhost:5029/addtargets", {
@@ -149,7 +147,6 @@ const useAPI = () => {
                 if (!response1.ok)
                     throw new Error('Network response was not ok ' + response1.statusText)
     
-    
                 const ids = await response1.json()
     
                 addedTargets = localTarget.map( (t, index) => ({
@@ -164,12 +161,7 @@ const useAPI = () => {
                 }))
     
                 deleteAll()
-
             }
-
-
-            
-
             const requestURL = `http://localhost:5029/gettargets?${param.toString()}`
 
             const response2 = await fetch(requestURL , {
