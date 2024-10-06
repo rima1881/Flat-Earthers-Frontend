@@ -157,7 +157,7 @@ const useAPI = () => {
                 ccmin : t.minCloudCover 
             }))
 
-            let newTargets;
+            let newTargets
 
             if(addedTargets){
                 newTargets = [...addedTargets, ...parsedData]

@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom"
 import useTargetDetails from "../../utils/useTargetDetails"
 import { useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faCaretLeft , faCaretRight } from "@fortawesome/free-solid-svg-icons"
+import { faSpinner } from "@fortawesome/free-solid-svg-icons"
 import usePixels from "../../utils/usePixel"
 
 
@@ -12,42 +12,39 @@ export default function ExamineTarget(){
     const { targetId } = useParams()
     const { targetData , images , formData , setFormData } = useTargetDetails(targetId )
     const { error , setError } = useState()
+    const [ isLoading , setIsLoading ] = useState(false)
 
     const [ disableBack , setDisableBack ] = useState(false)
     const [ disableForward , setDisableForward ] = useState(false)
     const [ activeImage , setImage ] = useState(0)
 
+    const [ rangeData , setRangeData ] = useState(10)
+
     const { grid , updateGrid } = usePixels()
-    
-    
-    console.log( images )
 
-    const handleChange = (event) => {
-        const { name, value } = event.target
 
-        setFormData((prevState) => ({
-            ...prevState,
-            [name]: value
-        }))
-
+    const handleRange = (event) => {
+        setRangeData(event.target.value); // Update value on change
     }
 
-
     const handleBack = () => {
+        if(activeImage > 0)
+            setImage( prev => prev - 1 )
         
-        if(activeImage == formData.numResults - 1)
-        {
-
-        }
-
     }
 
     const handleForward = () => {
 
+        if(activeImage < 4)
+            setImage( prev => prev + 1 )
+
     }
 
     const handleSubmit = () => {
-        updateGrid( targetData , images[activeImage].entityId , 15 )
+        setIsLoading(true)
+        updateGrid( targetData , images[activeImage].entityId , rangeData ).then(
+            setIsLoading(false)
+        )
     }
 
     let gridTemplate = <>
@@ -72,29 +69,39 @@ export default function ExamineTarget(){
         </div>
     }
 
+    const LoadingTemplate = <div className={styles.loadingContainer}>
+        <div className={styles.spinner}></div>
+    </div>
+
     if(images) {
 
     return (
         <div className={styles.container}>
+            { isLoading && LoadingTemplate}
             <div className={styles.topSec}>
                 <div className={styles.image}>
                     <img src={images[activeImage].browse} />
-                    <div>
-                        <FontAwesomeIcon icon={faCaretLeft} onClick={handleBack} className={disableBack ? styles.backDis : styles.backEN} />
-                        <FontAwesomeIcon icon={faCaretRight} onClick={handleForward} className={disableForward ? styles.forwardDis : styles.forwardEN} />
-                    </div>
                 </div>
                 
                 {gridTemplate}
 
             </div>
             <div className={styles.btmSec}>
+                <span><button onClick={handleBack} disabled={activeImage == 0} >Previous</button></span>
+                <span>{activeImage + 1} / 5</span>
+                <span><button onClick={handleForward} disabled={activeImage == 4}>Next</button></span>
+                <span> 
+                    Zoom Level: {rangeData}
+                    <input
+                        type="range"
+                        min="10"
+                        max="30"
+                        value={rangeData}
+                        onChange={handleRange}
+                    />
+                </span>
                 <span>Lat : {targetData.lat} </span>
                 <span>Lng : {targetData.lng} </span>
-                <span>Path : {targetData.path} </span>
-                <span>Row : {targetData.row} </span>
-                <span>Image Count : <input type="number" name="numResults" value={formData.numResults} onChange={handleChange} /></span>
-                <span>Notification offset : <input type="date" name="offSet"  value={formData.offSet} onChange={handleChange} /></span>
                 <button onClick={handleSubmit}>Load Grid</button>
             </div>
         </div>
