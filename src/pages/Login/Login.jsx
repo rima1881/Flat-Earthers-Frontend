@@ -3,6 +3,7 @@ import styles from "./Login.module.css";
 import useAuth from "../../utils/useAuth";
 import { useNavigate } from 'react-router-dom';
 import * as THREE from 'three';  // Import Three.js
+import { STLLoader } from 'three/examples/jsm/loaders/STLLoader';  // Import the STLLoader
 
 export default function Login() {
 
@@ -50,21 +51,27 @@ export default function Login() {
   };
 
   // Add Three.js Earth background using useEffect
+
   useEffect(() => {
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.getElementById('earth-background').appendChild(renderer.domElement);
-  
+
     // Load the Earth texture
     const textureLoader = new THREE.TextureLoader();
     const earthTexture = textureLoader.load('/public/earth_space_view.jpg');
-    const geometry = new THREE.SphereGeometry(12, 64, 64);  // Increased size
+    const geometry = new THREE.SphereGeometry(11, 64, 64);
     const material = new THREE.MeshBasicMaterial({ map: earthTexture });
     const earth = new THREE.Mesh(geometry, material);
     scene.add(earth);
-  
+
+    // Add Directional Light for Day/Night Cycle
+    const sunLight = new THREE.DirectionalLight(0xffffff, 1);
+    sunLight.position.set(30, 30, 30); // Initial position for the light
+    scene.add(sunLight);
+
     // Add stars
     const starGeometry = new THREE.BufferGeometry();
     const starMaterial = new THREE.PointsMaterial({ color: 0xffffff });
@@ -78,57 +85,71 @@ export default function Login() {
     starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
     const stars = new THREE.Points(starGeometry, starMaterial);
     scene.add(stars);
-  
-    // Create a satellite orbiting the Earth
-    const satelliteGeometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
-    const satelliteMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-    const satellite = new THREE.Mesh(satelliteGeometry, satelliteMaterial);
-    scene.add(satellite);
-  
+
+    // Load the satellite model using STLLoader
+    const loader = new STLLoader();
+    let satellite = null;  // To store the loaded satellite
+
+    loader.load('/public/3LandSat9Parts.stl', (geometry) => {
+      const material = new THREE.MeshStandardMaterial({ color: 0xFFFFFF });
+      satellite = new THREE.Mesh(geometry, material);
+      satellite.scale.set(0.02, 0.02, 0.02);  // Adjust the scale as needed
+      satellite.position.set(0, 3, 0);  // Initial position above the Earth
+      scene.add(satellite);
+    }, undefined, (error) => {
+      console.error('An error happened while loading the satellite model', error);
+    });
+
     let satelliteAngle = 0;
-  
+
     const updateSatellitePosition = () => {
-      const satelliteDistance = 13;
-      satelliteAngle += 0.01;
-      satellite.position.x = Math.cos(satelliteAngle) * satelliteDistance;
-      satellite.position.z = Math.sin(satelliteAngle) * satelliteDistance;
-      satellite.position.y = 3;
+      const satelliteDistance = 13;  // Distance of the satellite from the Earth
+      satelliteAngle += 0.01;  // Speed of the satellite
+      if (satellite) {
+        satellite.position.x = Math.cos(satelliteAngle) * satelliteDistance;
+        satellite.position.z = Math.sin(satelliteAngle) * satelliteDistance;
+        satellite.rotation.x = Math.PI / 4; // Tilt the satellite orbit
+      }
     };
-  
-    // Optional: Add nebula/galaxy background
-    const spaceTexture = textureLoader.load('/assets/space-nebula.jpg');
-    const spaceGeometry = new THREE.SphereGeometry(500, 64, 64);
-    const spaceMaterial = new THREE.MeshBasicMaterial({ map: spaceTexture, side: THREE.BackSide });
-    const space = new THREE.Mesh(spaceGeometry, spaceMaterial);
-    scene.add(space);
-  
+
+    // Set the camera distance from the scene
     camera.position.z = 25;
-  
+
+    // Add directional light to highlight the satellite
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+    directionalLight.position.set(10, 10, 10);  // Position the light
+    scene.add(directionalLight);
+
     const animate = function () {
       requestAnimationFrame(animate);
-  
-      // Rotate Earth and move the satellite
+
+      // Rotate the Earth
       earth.rotation.y += 0.005;
+
+      // Update satellite position
       updateSatellitePosition();
-  
+
+      // Simulate Day/Night Cycle by rotating the sun around the Earth
+      sunLight.position.x = Math.cos(earth.rotation.y) * 50;
+      sunLight.position.z = Math.sin(earth.rotation.y) * 50;
+
       renderer.render(scene, camera);
     };
-  
+
     animate();
-  
+
     const handleResize = () => {
       renderer.setSize(window.innerWidth, window.innerHeight);
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
     };
-  
+
     window.addEventListener('resize', handleResize);
-  
+
     return () => {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
-  
 
   return (
     <div className={styles.container}>
