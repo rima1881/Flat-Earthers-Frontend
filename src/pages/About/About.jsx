@@ -55,6 +55,7 @@ export default function About() {
     const animate = () => {
       requestAnimationFrame(animate);
       earth.rotation.y += 0.005; // Earth rotation speed
+      stars.rotation.y += 0.001; // Star rotation speed
       renderer.render(scene, camera);
     };
     animate();
