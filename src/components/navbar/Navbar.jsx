@@ -58,9 +58,11 @@ export default function Navbar(){
     return (
         <div className={style.container}>
             <ul className={style.list}>
-                <li className={style.logo}>
+                <a href="/about">
+                    <li className={style.logo}>
 
-                </li>
+                    </li>
+                </a>
                 <li>
                     <a href="/">
                         <FontAwesomeIcon className={style.icon} icon={faMap} />

@@ -8,6 +8,7 @@ import { useTarget } from "./utils/useTarget";
 import useAuth from "./utils/useAuth";
 import ExamineTarget from "./pages/ExamineTarget/ExamineTarget";
 import PrivateRoutes from "./utils/privateRoutes";
+import About from "./pages/about/about";
 
 export default function App() {
 
@@ -24,6 +25,8 @@ export default function App() {
             <Route path="/" element={<Home />} />
             <Route path="/targets" element={<Targets />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/about" element={<About />} />
+
 
             {/* user Paths */}
             <Route element={<PrivateRoutes />}>
