@@ -20,7 +20,7 @@
 .switch {
   position: fixed; /* Make it float */
   bottom: 20px; /* Position from the bottom of the screen */
-  right: 20px; /* Position from the right side of the screen */
+  left: 80px; /* Position from the right side of the screen */
   display: inline-block;
   width: 150px; /* Wider to fit text */
   height: 40px;  /* Smaller height */
