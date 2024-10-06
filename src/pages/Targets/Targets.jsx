@@ -59,6 +59,7 @@ export default function Targets(){
         <div className={styles.container}>
             <div className={styles.header}>
                 <span>Selected Targets</span>
+                <span>{user.email}</span>
             </div>
             <div className={styles.body}>
                 <table>

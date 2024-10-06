@@ -25,7 +25,7 @@ const useAuth = () => {
 
             try{
 
-                const response = fetch("http://localhost:5029/login", {
+                const response = await fetch("http://localhost:5029/login", {
                     method: 'POST', // Specify the method
                     headers: {
                         'Content-Type': 'application/json' 

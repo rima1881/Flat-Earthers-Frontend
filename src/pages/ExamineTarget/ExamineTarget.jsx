@@ -10,6 +10,8 @@ export default function ExamineTarget(){
 
     const [ target , setTarget] = useState()
 
+    console.log( getTargetDetails() )
+
     return (
         <div className={styles.container}>
             <div className={styles.topSec}>

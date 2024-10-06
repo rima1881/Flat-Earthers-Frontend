@@ -78,11 +78,33 @@ const useAPI = () => {
 
     } , [user])
 
-    const getTargetDetails = useCallback( targetId => {
+    const getTargetDetails = useCallback( async guid => {
 
         const token = user.token
 
-        console.log("fetching details from server")
+        try{
+            
+            const st = targets.find( t => st.guid == guid )
+
+            const params = new URLSearchParams({
+                path : st.path,
+                row : st.row,
+                numResults : 5
+            })
+
+            const requestURL = `http://localhost:5029/Images?${params.toString()}`
+
+            const response = await fetch( "requestURL" )
+
+            if (!response.ok)
+                throw new Error('Network response was not ok');
+            
+            const data = await response.json();
+
+        }
+        catch(error){
+            return null
+        }
 
         return { row : 0 , path : 0 , Path : 0 , Row : 0 , count : 0 , offset : 0 }
 
