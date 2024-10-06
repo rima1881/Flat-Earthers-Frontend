@@ -25,7 +25,7 @@ export default function Targets(){
             deleteTargetServer(uuid)
     }
 
-    const TargetTemplate = ({id, index, row, path, lat, lng}) => (
+    const TargetTemplate = ({guid, index, row, path, lat, lng}) => (
          
         <tr>
             <td>
@@ -43,7 +43,7 @@ export default function Targets(){
                 {lng}
             </td>
             <td>
-                <a href={"examine/"+ id} >Examine</a>
+                <a href={"examine/"+ guid} >Examine</a>
                 <button onClick={() => deleteHandle(id, index)}>Delete</button>
             </td>
         </tr>

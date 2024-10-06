@@ -10,8 +10,6 @@ export default function ExamineTarget(){
 
     const [ target , setTarget] = useState()
 
-    setTarget( getTargetDetails(targetId) )
-
     return (
         <div className={styles.container}>
             <div className={styles.topSec}>
@@ -24,12 +22,12 @@ export default function ExamineTarget(){
 
             </div>
             <div className={styles.btmSec}>
-                <span>Lat : {target.lat} </span>
-                <span>Lng : {target.lng} </span>
-                <span>Path : {target.path} </span>
-                <span>Row : {target.row} </span>
-                <span>Image Count : <input type="number" value={target.count} /></span>
-                <span>Notification offset : <input type="date" value={target.offset} /></span>
+                <span>Lat : 0 </span>
+                <span>Lng : 0 </span>
+                <span>Path : 0 </span>
+                <span>Row : 0 </span>
+                <span>Image Count : <input type="number" value="0" /></span>
+                <span>Notification offset : <input type="date" value="0" /></span>
                 <button>Submit</button>
             </div>
         </div>
