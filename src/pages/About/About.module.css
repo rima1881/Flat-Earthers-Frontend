@@ -1,0 +1,135 @@
+.aboutPage {
+  position: relative;
+  font-family: Arial, sans-serif;
+  color: #fff;
+  overflow-x: hidden;
+  overflow-y: auto; /* Enable scrolling */
+  width: 100%;
+  height: 100vh; /* Full viewport height */
+  background-color: #000; /* Space-like black */
+}
+
+.threeJsBackground {
+  position: fixed; /* Fix the background in place */
+  top: 0;
+  left: 60px;
+  width: 100%;
+  height: 100vh;
+  z-index: 0; /* Keep it behind content */
+  pointer-events: none; /* Allow interaction with content */
+}
+
+.heroSection, .teamSection, .contactSection {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  z-index: 1;
+  position: relative;
+}
+
+.heroSection {
+  background: rgba(0, 0, 0, 0.7);
+  text-align: center;
+}
+
+.teamSection, .contactSection {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.teamContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.teamMember {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  border-radius: 10px;
+  width: 250px;
+  text-align: center;
+}
+
+.teamMember h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: #fff;
+}
+
+.teamMember p {
+  font-size: 1rem;
+  margin-bottom: 10px;
+  color: #ddd;
+}
+
+.socialLinks {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.socialLinks img {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.socialLinks img:hover {
+  transform: scale(1.1);
+}
+
+.contactSection form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 600px;
+}
+
+.contactSection input,
+.contactSection textarea {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 5px;
+  width: 100%;
+  max-width: 500px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border: none;
+  outline: none;
+}
+
+.contactSection button {
+  padding: 10px 20px;
+  background-color: #5865F2;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.contactSection button:hover {
+  background-color: #4752c4;
+}
+
+@media (max-width: 768px) {
+  .heroSection, .teamSection, .contactSection {
+    padding: 10px;
+  }
+
+  .teamContainer {
+    flex-direction: column;
+  }
+
+  .teamMember {
+    width: 100%;
+  }
+}
