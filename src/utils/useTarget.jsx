@@ -28,7 +28,7 @@ const useWRS2 = () => {
                         { lat : e[1] , lng : e[0] }
                     ))
                 }
-            ))
+            )).slice(0 , 5)
         }, [wrs2])
     
     return extractSquares

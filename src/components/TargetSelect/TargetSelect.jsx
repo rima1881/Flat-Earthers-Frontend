@@ -14,7 +14,7 @@ export default function TargetSelect({options, clearOptions,coordinates, setActi
         <span>{ text }</span>
     </li>)
 
-    const renderedOptions = options.slice(0,5).map( ( _ , index) => <OptionTemplate isActive={options.activeIndex == index} text={"Option " + (index + 1)} key={index} index={index} /> )
+    const renderedOptions = options.map( ( _ , index) => <OptionTemplate isActive={options.activeIndex == index} text={"Option " + (index + 1)} key={index} index={index} /> )
 
     const { targetsState } = useTarget()
     const { addTarget } = targetsState()
