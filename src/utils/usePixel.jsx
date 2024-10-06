@@ -10,6 +10,8 @@ const usePixel = () => {
 
     const updateGrid = async (target , imageId, zoomLevel) => {
 
+        console.log("fuck umar")
+
         const params = new URLSearchParams({
             entityId : imageId,
             latitude : target.lat,
@@ -22,6 +24,7 @@ const usePixel = () => {
             const response =  await fetch(RequestURL)
             if (!response.ok) throw new Error('Network response was not ok');
             const data = await response.json()
+            console.log(data)
             setGrid(data)
         }
         catch(error) {
