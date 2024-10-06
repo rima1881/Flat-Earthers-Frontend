@@ -20,6 +20,8 @@ export default function Login() {
 
   const [isLoggingIn, setIsLoggingIn] = useState(true); // Tracks login/signup state
   const [formData, setFormData] = useState({ email: "", password: "", confPwd: "" });
+  const [error, setError] = useState()
+
 
   // Handles input changes for email, password, and confirmation password
   const inputHandle = (event) => {
@@ -30,18 +32,59 @@ export default function Login() {
     }));
   };
 
+  const formValidation = () => {
+
+    //Validate Email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if ( !emailRegex.test(formData.email) ){
+      setError("Invalid Email")
+      return false
+    }
+
+
+    //Validate Pass lenght
+    if(formData.password.length < 8){
+      setError("Password is to short")
+      return false
+    }
+
+    //Validate pass & config pass
+    if (!isLoggingIn){
+
+      if (formData.password != formData.confPwd) {
+        setError("Password is not equal to Confirm Password")
+        return false
+      }
+
+    }
+
+
+    return true
+  }
+
   // Handles form submission
   const submitHandler = (e) => {
     e.preventDefault();
 
+    if (!formValidation())
+      return
+
     if (isLoggingIn) {
-      logIn(formData); // Log in
-    } else {
-      if (formData.password !== formData.confPwd) {
-        alert("Passwords do not match!");
-        return;
+      
+      const wasOK = logIn(formData)
+      
+      if (!wasOK) { 
+        setError("There was an Error")
+        return
       }
-      signUp(formData); // Sign up
+
+    } else {
+
+      const wasOk = signUp(formData)
+      if (!wasOk) { 
+        setError("There was an Error")
+        return
+      }
     }
   };
 
@@ -61,7 +104,7 @@ export default function Login() {
 
     // Load the Earth texture
     const textureLoader = new THREE.TextureLoader();
-    const earthTexture = textureLoader.load('/public/earth_space_view.jpg');
+    const earthTexture = textureLoader.load('/earth_space_view.jpg');
     const geometry = new THREE.SphereGeometry(11, 64, 64);
     const material = new THREE.MeshBasicMaterial({ map: earthTexture });
     const earth = new THREE.Mesh(geometry, material);
@@ -90,7 +133,7 @@ export default function Login() {
     const loader = new STLLoader();
     let satellite = null;  // To store the loaded satellite
 
-    loader.load('/public/3LandSat9Parts.stl', (geometry) => {
+    loader.load('/3LandSat9Parts.stl', (geometry) => {
       const material = new THREE.MeshStandardMaterial({ color: 0xFFFFFF });
       satellite = new THREE.Mesh(geometry, material);
       satellite.scale.set(0.02, 0.02, 0.02);  // Adjust the scale as needed
@@ -195,6 +238,8 @@ export default function Login() {
               onChange={inputHandle}
             />
           )}
+
+          {error}
 
           <button className={styles.button} type="submit">
             {isLoggingIn ? "Login" : "Sign Up"}

@@ -19,58 +19,66 @@ const useAuth = () => {
             Cookies.set('auth' , JSON.stringify(parsedData), {expires: 1/24} )
             setUser(parsedData)
 
-            await syncUserTarget()
-
         }
 
-        const logIn = ( user ) => {
+        const logIn = async ( user ) => {
 
-            fetch("http://localhost:5029/login", {
-                method: 'POST', // Specify the method
-                headers: {
-                    'Content-Type': 'application/json' 
-                },
-                body: JSON.stringify( { email : user.email , password : user.password } )
-            })
-            .then((response) => {
+            try{
+
+                const response = fetch("http://localhost:5029/login", {
+                    method: 'POST', // Specify the method
+                    headers: {
+                        'Content-Type': 'application/json' 
+                    },
+                    body: JSON.stringify( { email : user.email , password : user.password } )
+                })
                             
-              if (!response.ok)
-                throw new Error('Network response was not ok ' + response.statusText);
+                if (!response.ok)
+                    throw new Error('Network response was not ok ' + response.statusText)
                   
-                return response.json()
-            })
-            .then((data) => {
-          
+                const data = await response.json()          
                 const { token } = data
                 const { email } = user
 
                 saveUser({ email : email , token : token })
-            })
-            .catch((err) => console.log(err))
+            }
+            catch(err){
+                console.log(err)
+                return false
+            }
+
+            return true
 
         }
 
-        const signUp = ( user ) => {
+        const signUp = async ( user ) => {
 
-            fetch("http://localhost:5029/Register", {
-                method: 'POST', // Specify the method
-                headers: {
-                    'Content-Type': 'application/json' 
-                },
-                body: JSON.stringify( { email : user.email , password : user.password } )
-            })
-            .then((response) => {
-                            
-              if (!response.ok)
-                throw new Error('Network response was not ok ' + response.statusText);
+            try{
+                
+                const response = await fetch("http://localhost:5029/Register", {
+                    method: 'POST', // Specify the method
+                    headers: {
+                        'Content-Type': 'application/json' 
+                    },
+                    body: JSON.stringify( { email : user.email , password : user.password } )
+                })
+                        
+                if (!response.ok)
+                    throw new Error('Network response was not ok ' + response.statusText);
                   
-                return response.json()
-            })
-            .then((data) => {
-                    
-                saveUser(data)
-            })
-            .catch((err) => console.log(err))
+                const data = await response.json()
+                
+                const email = data.user.email
+                const token = { data }
+
+                saveUser({ email : email , token : token })
+            }
+            catch(err){
+                console.log(err)
+                return false
+            }
+
+            return true
 
         }
 
