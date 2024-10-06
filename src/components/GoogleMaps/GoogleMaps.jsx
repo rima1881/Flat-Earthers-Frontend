@@ -138,6 +138,7 @@ export default function GoogleMaps() {
     const handleToggle = (isChecked) => {
       setShowTargets(isChecked);
       setShowMarkerts(isChecked); // Show/hide markers when toggled
+      console.log(isChecked)
     };
 
   const renderedTargets = targets.map((target, index) => (
@@ -173,7 +174,6 @@ export default function GoogleMaps() {
         <input
           type="checkbox"
           onChange={(e) => handleToggle(e.target.checked)}
- // toggle state on change
         />
         <span className={style.slider}>
         {showTargets ? "Hide Targets" : "Show Targets"}

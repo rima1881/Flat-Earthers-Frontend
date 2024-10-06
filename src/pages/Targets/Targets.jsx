@@ -8,7 +8,7 @@ export default function Targets(){
 
     const { targetsState } = useTarget()
     const { targets, deleteTarget } = targetsState()
-    const { deleteTargetServer , pushTargets , pullTargets } = useAPI()
+    const { deleteTargetServer } = useAPI()
 
     const { userState } = useAuth()
     const { user } = userState()
@@ -23,17 +23,6 @@ export default function Targets(){
         //  Delete server targets
         if (hasLoggedIn && uuid != -1)
             deleteTargetServer(uuid)
-    }
-
-    const handleSync = () => {
-        console.log("I have just shitty")
-        if (hasLoggedIn)
-            pullTargets()
-    }
-
-    const handlePush = () => {
-        if (hasLoggedIn)
-            pushTargets()
     }
 
     const TargetTemplate = ({id, index, row, path, lat, lng}) => (
@@ -69,7 +58,6 @@ export default function Targets(){
         <div className={styles.container}>
             <div className={styles.header}>
                 <span>Selected Targets</span>
-                <button disabled={!hasLoggedIn} onClick={handlePush}>Upload</button>
             </div>
             <div className={styles.body}>
                 <table>

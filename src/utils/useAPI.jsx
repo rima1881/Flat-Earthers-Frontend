@@ -192,7 +192,52 @@ const useAPI = () => {
 
     } , [user])
 
-    return { pushTargets , pullTargets , deleteTargetServer , getTargetDetails , addTargetAPI}
+    const syncUserTarget = useCallback( async () => {
+
+        const token = user.token
+
+        const param =  new URLSearchParams({
+            email: user.email
+        })
+
+        const requestURL = `http://localhost:5029/gettargets?${param.toString()}`
+
+        try{
+            const response = await fetch(requestURL , {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Auth-Token': token
+                }
+            })
+    
+            if (!response.ok)
+                throw new Error('Network response was not ok ' + response.statusText);
+                  
+            const DBtargets = response.json()
+
+            const parsedData = DBtargets.map( t => ({ 
+                guid : t.guid,
+                lat : t.latitude,
+                lng : t.longitude,
+                row : t.row,
+                path : t.path,
+                ccmax : t.maxCloudCover,
+                ccmin : t.minCloudCover 
+            }))
+
+            const newTargets = [...targets, ...parsedData]
+
+            updateTargets(newTargets)
+        }
+        catch(error){
+            console.log(error)
+        }
+
+    }, [user])
+
+
+    return { deleteTargetServer , getTargetDetails , addTargetAPI , syncUserTarget}
 }
 
 export default useAPI
