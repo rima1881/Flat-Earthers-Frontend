@@ -10,6 +10,12 @@ export default function ExamineTarget(){
 
     const [ target , setTarget] = useState()
 
+    useEffect( async () => {
+
+        setTarget( await getTargetDetails(targetId) )
+
+    }, [])
+
     return (
         <div className={styles.container}>
             <div className={styles.topSec}>

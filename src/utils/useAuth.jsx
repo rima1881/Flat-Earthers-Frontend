@@ -14,7 +14,6 @@ const useAuth = () => {
 
         const saveUser = async (data) => {
             
-
             const parsedData = { email : data.email , token : data.token }
             Cookies.set('auth' , JSON.stringify(parsedData), {expires: 1/24} )
             setUser(parsedData)
@@ -25,7 +24,7 @@ const useAuth = () => {
 
             try{
 
-                const response = fetch("http://localhost:5029/login", {
+                const response = await fetch("http://localhost:5029/login", {
                     method: 'POST', // Specify the method
                     headers: {
                         'Content-Type': 'application/json' 
@@ -39,6 +38,8 @@ const useAuth = () => {
                 const data = await response.json()          
                 const { token } = data
                 const { email } = user
+
+                console.log(token)
 
                 saveUser({ email : email , token : token })
             }
