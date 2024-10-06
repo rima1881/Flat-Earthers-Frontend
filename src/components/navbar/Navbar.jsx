@@ -3,13 +3,13 @@ import { faCircleUp , faMap , faCircleDot , faCircleDown , faSignIn , faSignOut 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useTarget } from "../../utils/useTarget"
 import useAuth from "../../utils/useAuth"
-import {useRef , useEffect} from 'react'
+import { useEffect} from 'react'
 import useAPI from "../../utils/useAPI"
 
 export default function Navbar(){
 
     const { targetsState } = useTarget()
-    const { downloadTarget } = targetsState()
+    const { downloadTarget , deletePrev } = targetsState()
 
     const { userState } = useAuth()
     const { user , logout } = userState()
@@ -21,27 +21,11 @@ export default function Navbar(){
     useEffect(() => {
 
         if(!hasLoggedIn)
-            return
-
-        syncUserTarget()
+            deletePrev()
+        else
+            syncUserTarget()
 
     } , [user])
-
-    const fileInputRef = useRef(null)
-    const handleUpload = (event) => {
-        const file = event.target.files[0];
-    
-        if (!file) {
-            alert('Please choose a file');
-            console.log('No file selected.');
-        } 
-        else {    }
-    };
-
-    const triggerFileInput = () => {
-        fileInputRef.current.click();
-    };
-
 
     const loginOption = <li>
         <a href="/login">
@@ -74,9 +58,8 @@ export default function Navbar(){
                     </a>
                 </li>
                 <li>
-                    <a href="#" onClick={triggerFileInput}>
+                    <a href="#">
                         <FontAwesomeIcon className={style.icon} icon={faCircleUp} />
-                        <input type="file" accept=".csv, .xlsx" onChange={handleUpload} ref={fileInputRef} style={{display:'none'}}/>
                     </a>
                 </li>
                 <li>

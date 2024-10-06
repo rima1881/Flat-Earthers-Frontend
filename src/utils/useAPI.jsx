@@ -120,7 +120,7 @@ const useAPI = () => {
             })
 
             if (!response1.ok)
-                throw new Error('Network response was not ok ' + response.statusText)
+                throw new Error('Network response was not ok ' + response1.statusText)
 
 
             const ids = await response1.json()

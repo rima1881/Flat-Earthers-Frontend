@@ -167,36 +167,16 @@ const useTarget = () => {
             document.body.removeChild(link)
 
         }
-        /*const uploadTarget = (file) => {
-            if (!file) {
-                alert('No file selected.');
-                return;
-            }
-            console.log(Papa)
-            Papa.parse(file, {
-                header: true,
-                skipEmptyLines: true,
-                complete: (results) => {
-                    const newTargets = results.data.map(row => ({
-                        lat: parseFloat(row.Latitude),
-                        lng: parseFloat(row.Longitude),
-                        path: row.Path,
-                        row: row.Row,
-                        prediction: row.Prediction
-                    }));
-                    console.log(newTargets)
-                    newTargets.forEach(newtarget => {
-                        addTarget(newtarget)
-                    });
-                },
-                error: (error) => {
-                    console.error('Error parsing the file:', error);
-                }
-            });
-        };*/
+
+        const deletePrev = () => {
+
+            const newTargets = targets.filter(t => t.guid == -1 )
+            updateTargets(newTargets)
+
+        }
 
         return (
-            <targetsContext.Provider value={{ targets , addTarget, deleteTarget , downloadTarget , getTargetImage , updateTargets , deleteAll }}>
+            <targetsContext.Provider value={{ targets , addTarget, deleteTarget , downloadTarget , getTargetImage , updateTargets , deleteAll , deletePrev }}>
                 {children}
             </targetsContext.Provider>
         )
