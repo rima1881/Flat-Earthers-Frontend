@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import * as THREE from 'three';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import emailjs from 'emailjs-com'; 
 import styles from './About.module.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -82,6 +83,18 @@ export default function About() {
     });
   }, []);
 
+    // EmailJS form submission handler
+    const handleFormSubmit = (e) => {
+      e.preventDefault();
+      emailjs.sendForm('service_tfjsok4', 'template_gcxdamq', e.target, 'suv-WSaV8cATttLjs')
+        .then((result) => {
+          alert('Message Sent Successfully!');
+          e.target.reset(); // Reset the form after successful submission
+        }, (error) => {
+          alert('An error occurred. Please try again.');
+        });
+    };
+
   return (
     <div className={styles.aboutPage}>
       {/* Three.js Background */}
@@ -104,7 +117,7 @@ export default function About() {
           <div className={styles.teamMember}>
             <h3>Amir Gharibipour</h3>
             <p>Project Manager + Frontend Developer</p>
-            <p>John is an expert in machine learning and computer vision.</p>
+            <p>Amir coordinated our team's timeline and also worked highly on frontend development of the project.</p>
             <div className={styles.socialLinks}>
               <a href="https://github.com/rima1881" target="_blank" rel="noopener noreferrer">
                 <img src="/icons/github.svg" alt="GitHub" />
@@ -117,7 +130,7 @@ export default function About() {
           <div className={styles.teamMember}>
             <h3>Bryan Carlo Miguel</h3>
             <p>Backend Developer</p>
-            <p>Jane brings a keen eye for design and user experiences.</p>
+            <p>Bryan specialized in server-side programming and database management along with backend development.</p>
             <div className={styles.socialLinks}>
               <a href="https://github.com/bryjen" target="_blank" rel="noopener noreferrer">
                 <img src="/icons/github.svg" alt="GitHub" />
@@ -130,7 +143,7 @@ export default function About() {
           <div className={styles.teamMember}>
             <h3>Mohammed Umaruddin</h3>
             <p>Frontend Developer</p>
-            <p>Mike specializes in server-side programming and database management.</p>
+            <p>Umar specializes in working on frontend development and also user interfaces and functionalities.</p>
             <div className={styles.socialLinks}>
               <a href="https://github.com/genericlearner" target="_blank" rel="noopener noreferrer">
                 <img src="/icons/github.svg" alt="GitHub" />
@@ -144,7 +157,7 @@ export default function About() {
           <div className={styles.teamMember}>
             <h3>Joyal Biju Kulangara</h3>
             <p>UI/UX Designer</p>
-            <p>Emily ensures smooth and dynamic user interfaces for our projects.</p>
+            <p>Joyal ensured a smooth and dynamic user interface for our project along with brining a keen eye for design and user experiences.</p>
             <div className={styles.socialLinks}>
               <a href="https://github.com/Joyal99" target="_blank" rel="noopener noreferrer">
                 <img src="/icons/github.svg" alt="GitHub" />
@@ -157,7 +170,7 @@ export default function About() {
           <div className={styles.teamMember}>
             <h3>Elaheh Zehtab</h3>
             <p>DevOps</p>
-            <p>David coordinates the team's work and manages our timelines.</p>
+            <p>Elaheh coordinated the deployment of our project.</p>
             <div className={styles.socialLinks}>
               <a href="https://github.com/ELLIE-ZHB" target="_blank" rel="noopener noreferrer">
                 <img src="/icons/github.svg" alt="GitHub" />
@@ -170,16 +183,30 @@ export default function About() {
         </div>
       </section>
 
-      {/* Contact Section */}
+    {/* Contact Section */}
       <section className={styles.contactSection}>
         <h2>Contact Us</h2>
-        <form>
-          <input type="text" placeholder="Your Name" />
-          <input type="email" placeholder="Your Email" />
-          <textarea placeholder="Your Message"></textarea>
+        <form onSubmit={handleFormSubmit}>
+          <input type="text" name="name" placeholder="Your Name" required />
+          <input type="email" name="email" placeholder="Your Email" required />
+          <textarea name="message" placeholder="Your Message" required></textarea>
           <button type="submit">Send Message</button>
         </form>
       </section>
+
+          {/* Footer Section */}
+    <footer className={styles.footer}>
+      <div className={styles.footerContent}>
+        <a href="https://github.com/Flat-Earthers-App" target="_blank" rel="noopener noreferrer">
+          View our GitHub Repository
+        </a>
+        <div className={styles.copyright}>
+          <img src="/logo.webp" alt="Flat Earthers Logo" className={styles.footerLogo} />
+          <span>© 2024 Flat Earthers</span>
+        </div>
+      </div>
+    </footer>
     </div>
+
   );
 }
