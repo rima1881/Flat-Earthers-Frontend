@@ -27,6 +27,7 @@ export default function GoogleMaps() {
     libraries,
   });
 
+
   //setting the map and the marker
   const [marker, setMarker] = useState();
   const [showMarkers, setShowMarkerts] = useState(false);
@@ -51,6 +52,7 @@ export default function GoogleMaps() {
   const { targetsState } = useTarget();
   const { targets } = targetsState();
 
+  console.log(targets)
   //callback function for when the map is clicked
   const updateMarkerAndTargets = useCallback(
     (lat, lng) => {

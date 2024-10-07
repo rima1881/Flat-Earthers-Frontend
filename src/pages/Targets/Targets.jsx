@@ -2,16 +2,25 @@ import { useTarget } from "../../utils/useTarget";
 import useAPI from "../../utils/useAPI";
 import styles from "./Targets.module.css";
 import useAuth from "../../utils/useAuth";
+import { useState } from "react";
 
 export default function Targets() {
   const { targetsState } = useTarget();
-  const { targets, deleteTarget } = targetsState();
-  const { deleteTargetServer } = useAPI();
+  const { targets, deleteTarget } = targetsState()
+  const { deleteTargetServer , editTarget } = useAPI()
+  const [ EditingTarget , setEditingTarget ] = useState(-1)
 
   const { userState } = useAuth();
   const { user } = userState();
 
   const hasLoggedIn = user.token != "";
+
+  const TimeValidation = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+  const editHandle = (index) => {
+
+    setEditingTarget(index)
+  } 
 
   const deleteHandle = (uuid, index) => {
     //  Delete local targets
@@ -19,17 +28,24 @@ export default function Targets() {
 
     //  Delete server targets
     if (hasLoggedIn && uuid != -1) deleteTargetServer(uuid);
-  };
+  }
 
-  const TargetTemplate = ({ guid, index, row, path, lat, lng }) => (
+  const confirmHandle = (index) => {
+    setEditingTarget(-1)
+  }
+
+  const TargetTemplate = ({ guid, index, ccmin , ccmax , Notf, lat, lng }) => (
     <tr>
-      <td>{row}</td>
+      <td>{ lat } </td>
+      <td>{ lng }</td>
+      
+      <td>{ index==EditingTarget ? <input value={ccmax} name={index + ".ccmax"} /> : ccmax}</td>
 
-      <td>{path}</td>
-      <td>{lat}</td>
-      <td>{lng}</td>
+      <td>{ index==EditingTarget ? <input value={ccmin} name={index + ".ccmin"} /> : ccmin }</td>
+      <td>{ index==EditingTarget ? <input value={Notf} name={index + ".notificationOffset"} /> : Notf }</td>
       <td>
         <a href={"examine/" + guid}>Examine</a>
+        {index == EditingTarget ? <span onClick={() => confirmHandle(index)} >Confirm</span> : <span onClick={() => editHandle(index)}> Edit </span>}
         <button onClick={() => deleteHandle(guid, index)}>Delete</button>
       </td>
     </tr>
@@ -44,6 +60,9 @@ export default function Targets() {
       lng={target.lng}
       key={index}
       index={index}
+      ccmin={target.ccmin}
+      ccmax={target.ccmax}
+      Notf={target.notificationOffset}
     />
   ));
 
@@ -57,10 +76,11 @@ export default function Targets() {
         <table>
           <thead>
             <tr>
-              <th>Row</th>
-              <th>Path</th>
               <th>Latitude</th>
               <th>Longitude</th>
+              <th>maxCloudCover</th>
+              <th>minCloudCover</th>
+              <th>notificationOffset</th>
               <th>Action</th>
             </tr>
           </thead>

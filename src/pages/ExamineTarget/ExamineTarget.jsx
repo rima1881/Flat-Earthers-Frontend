@@ -5,6 +5,7 @@ import { useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faSpinner } from "@fortawesome/free-solid-svg-icons"
 import usePixels from "../../utils/usePixel"
+import Targets from "../Targets/Targets"
 
 
 export default function ExamineTarget(){
@@ -49,9 +50,6 @@ export default function ExamineTarget(){
 
     let gridTemplate = <>
     </>
-
-    console.log("mammad")
-    console.log(grid.length)
 
     if( grid.length != 0 ) {
         gridTemplate =  <div className={styles.grid}>

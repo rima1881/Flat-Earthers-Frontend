@@ -45,6 +45,13 @@
     transition: background-color 0.3s ease-in-out;
 }
 
+td span{
+    cursor: pointer;
+}
+td a{
+    cursor: pointer;
+}
+
 .header button:disabled {
     background-color: #d1d1d1;
     cursor: not-allowed;

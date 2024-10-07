@@ -38,8 +38,8 @@ const useAPI = () => {
             if (!response.ok)
                 throw new Error('Network response was not ok ' + response.statusText)
 
+
             const guid = await response.json()
-            console.log(guid)
             return guid[0]
 
         }catch (error) {
@@ -97,6 +97,7 @@ const useAPI = () => {
                 longitude: t.lng,
                 minCloudCover: t.minCC,
                 maxCloudCover: t.maxCC,
+                prediction : t.prediction,
                 notificationOffset: "01:00:00"
             }))
             let addedTargets
@@ -119,6 +120,8 @@ const useAPI = () => {
     
                 const ids = await response1.json()
     
+                console.log(requestURL)
+
                 addedTargets = localTarget.map( (t, index) => ({
                     guid : ids[index],
                     path : t.path,
@@ -127,6 +130,7 @@ const useAPI = () => {
                     lng: t.longitude,
                     minCloudCover: t.minCC,
                     maxCloudCover: t.maxCC,
+                    prediction : t.prediction,
                     notificationOffset: "01:00:00"
                 }))
     
@@ -141,11 +145,18 @@ const useAPI = () => {
                     'X-Auth-Token': token
                 }
             })
+
     
             if (!response2.ok)
                 throw new Error('Network response was not ok ' + response2.statusText);
                   
             const DBtargets = await response2.json()
+
+            console.log("kir")
+            console.log(DBtargets)
+
+            console.log("mammad")
+            console.log(DBtargets)
 
             const parsedData = DBtargets.map( t => ({ 
                 guid : t.guid,
@@ -154,7 +165,9 @@ const useAPI = () => {
                 row : t.row,
                 path : t.path,
                 ccmax : t.maxCloudCover,
-                ccmin : t.minCloudCover 
+                ccmin : t.minCloudCover ,
+                prediction : t.prediction,
+                notificationOffset : t.notificationOffset
             }))
 
             let newTargets
@@ -174,8 +187,34 @@ const useAPI = () => {
 
     }, [user])
 
+    const editTarget = useCallback ( async ( ccmin , ccmax , notificationOffset ) => {
 
-    return { deleteTargetServer , addTargetAPI , syncUserTarget}
+        const token = user.token
+
+        const response = await fetch("http://localhost:5029/EditTarget" , {
+            method : "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Auth-Token': token
+            },
+            body: JSON.stringify( {
+                targetGuid : user.email,
+                newMinCloudCover : ccmin,
+                newMaxCloudCover : ccmax,
+                newNotificationOffset : "01:00:00"
+            })
+        })
+
+        if (!response.ok)
+            throw new Error('Network response was not ok ' + response.statusText)
+
+        const data = await response.json()
+
+        console.log(data)
+
+    }, [ user ])
+
+    return { deleteTargetServer , addTargetAPI , syncUserTarget , editTarget}
 }
 
 export default useAPI

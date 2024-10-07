@@ -32,7 +32,7 @@ export default function TargetSelect({options, clearOptions,coordinates, setActi
         const lat = coordinates.lat
         const lng = coordinates.lng
 
-        const newTarget = { guid : -1 , row : row , path : path ,lat : lat, lng : lng , minCC : 0 , maxCC : 0 }
+        const newTarget = { guid : -1 , row : row , path : path ,lat : lat, lng : lng , minCC : 0 , maxCC : 0.9  }
 
         if (hasLoggedIn){
             newTarget.guid = await addTargetAPI( newTarget )

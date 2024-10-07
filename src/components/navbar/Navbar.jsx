@@ -20,8 +20,6 @@ export default function Navbar(){
 
     useEffect(() => {
 
-        console.log("I was ran")
-
         if(!hasLoggedIn)
             deletePrev()
         else

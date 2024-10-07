@@ -129,7 +129,7 @@ const useTarget = () => {
             })
         }
 
-        const downloadTarget = () => {
+        const downloadTarget = async () => {
 
             //Download performs the downloading of the csv
             if(targets.length === 0){
@@ -139,13 +139,16 @@ const useTarget = () => {
 
             //setting up the data for headers and row data
             const header = ['Latitude', 'Longitude','Path', 'Row', 'Prediction']
-            const rows = targets.map(entry =>[
+            const rows = targets.map( (entry,index) =>[
                 entry.lat,
                 entry.lng,
                 entry.path,
                 entry.row,
-                entry.prediction
+                0
             ])
+
+            
+
 
             //mapping the rows to the headers
             const csv= [
