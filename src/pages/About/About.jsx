@@ -143,7 +143,7 @@ export default function About() {
           <div className={styles.teamMember}>
             <h3>Mohammed Umaruddin</h3>
             <p>Frontend Developer</p>
-            <p>Umar specializes in working on frontend development and also user interfact and functionalities.</p>
+            <p>Umar specializes in working on frontend development and also user interfaces and functionalities.</p>
             <div className={styles.socialLinks}>
               <a href="https://github.com/genericlearner" target="_blank" rel="noopener noreferrer">
                 <img src="/icons/github.svg" alt="GitHub" />
